@@ -80,4 +80,4 @@ theme: landscape
 deploy:
   type: git
   repository: https://github.com/GTRgoSky/GTRgoSky.github.io.git
-  branch: dev
+  branch: master
