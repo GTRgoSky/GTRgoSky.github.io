@@ -3,7 +3,7 @@ title: 每周一段JavaScript权威指南-第二周
 date: 2020-05-03
 tags:
 - JavaScript权威指南
-header-img: http://note.youdao.com/yws/res/9100/WEBRESOURCE17201741f985d3792054e718efa766af
+header-img: https://img-blog.csdnimg.cn/2020050614115438.png
 catalog: true
 toc_nav_num: true
 ---

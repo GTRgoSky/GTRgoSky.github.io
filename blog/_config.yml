@@ -112,7 +112,7 @@ deploy:
 # Sidebar settings 设置侧边头像
 sidebar: true                       # whether or not using Sidebar.
 sidebar-about-description: ""
-sidebar-avatar: https://note.youdao.com/yws/res/9095/WEBRESOURCEd07d80780b3bd155e1800522073891d1      # use absolute URL, seeing it's used in both `/` and `/about/`
+sidebar-avatar: https://img-blog.csdnimg.cn/20200506141449764.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 widgets:
 - featured-tags
 - short-about
