@@ -129,6 +129,13 @@
 
                         
                         <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
                             <a href="/archive/">Archives</a>
                         </li>
                         
@@ -137,13 +144,6 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
-                            <a href="/about/About.html">About</a>
                         </li>
                         
                     
@@ -234,7 +234,37 @@
 
 <div class="post-preview">
 
-    <a href="/2020/09/28/Vue3源码学习/Ref/">
+    <a href="/2020/09/28/Vue3源码学习/effect/">
+        <h2 class="post-title">
+            
+            学习Vue3源码--effect篇
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            effect篇
+packages\reactivity\src\effect.ts
+
+targetMap创建一个 全局 weakMap 对象，用于缓存所有 有 副作用的目标
+effectStack副作用堆栈 一个数组List，先进后出 [FX 干嘛用的]
+activeEffect一个 正在被激活的 副作用 Function, 并且挂在了一些对象
+isEffect如果fn 存在 且具有副作用标......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2020-09-28
+        </p>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/09/27/Vue3源码学习/Ref/">
         <h2 class="post-title">
             
             学习Vue3源码--Ref篇
@@ -254,7 +284,7 @@ ref()1. 执行 createRef(rawValue)
     
         <p class="post-meta">
             Posted by Wings on
-            2020-09-28
+            2020-09-27
         </p>
     
 
@@ -521,7 +551,7 @@ finish
             
         
             
-            <a href="/tags/#Vue3" title="Vue3" rel="2">Vue3</a>
+            <a href="/tags/#Vue3" title="Vue3" rel="3">Vue3</a>
             
         
             
@@ -579,7 +609,11 @@ finish
     <ul>
       
         <li>
-          <a href="/2020/09/28/Vue3源码学习/Ref/">学习Vue3源码--Ref篇</a>
+          <a href="/2020/09/28/Vue3源码学习/effect/">学习Vue3源码--effect篇</a>
+        </li>
+      
+        <li>
+          <a href="/2020/09/27/Vue3源码学习/Ref/">学习Vue3源码--Ref篇</a>
         </li>
       
         <li>
@@ -592,10 +626,6 @@ finish
       
         <li>
           <a href="/2020/06/06/每周一段JavaScript权威指南/week4/">每周一段JavaScript权威指南-第四周</a>
-        </li>
-      
-        <li>
-          <a href="/2020/05/22/每周一段JavaScript权威指南/week3/">每周一段JavaScript权威指南-第三周</a>
         </li>
       
     </ul>
@@ -618,7 +648,7 @@ finish
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
         <hr>
