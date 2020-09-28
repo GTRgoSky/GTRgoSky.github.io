@@ -234,10 +234,39 @@
 
 <div class="post-preview">
 
+    <a href="/2020/09/28/Vue3源码学习/Ref/">
+        <h2 class="post-title">
+            
+            学习Vue3源码--Ref篇
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Ref
+packages\reactivity\src\ref.ts1const r = ref(rawValue, [shallow = false])
+
+ref()1. 执行 createRef(rawValue)
+2. 判断 rawValue 是否是一个Ref对象，如果是直接返回，如果不是则实例化 RefImpl 
+    2.1 RefImpl 接受 rawValue, shallo......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2020-09-28
+        </p>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2020/09/24/Vue3源码学习/runtime-core/">
         <h2 class="post-title">
             
-            学习Vue3源码
+            学习Vue3源码 - runtime-core 篇
         </h2>
         <h3 class="post-subtitle">
             
@@ -246,8 +275,8 @@
             目录:runtime-core
 持续更新中
 
-vue的文件目录https://juejin.im/post/6844903957421096967
-案例在TestLoL的Vite尝试创建APP (createApp)1. import App from &apos;./App.vue&apos;; - 生成一个App.vue 的 render 函数，并绑定在 export 导出的 rende......
+文件目录https://juejin.im/post/6844903957421096967
+案例在TestLoL的Vite尝试创建APP (createApp)1. import App from &apos;./App.vue&apos;; - 生成一个App.vue 的 render 函数，并绑定在 export 导出的 render 对象......
         </div>
     </a>
     
@@ -492,7 +521,7 @@ finish
             
         
             
-            <a href="/tags/#Vue3" title="Vue3" rel="1">Vue3</a>
+            <a href="/tags/#Vue3" title="Vue3" rel="2">Vue3</a>
             
         
             
@@ -550,7 +579,11 @@ finish
     <ul>
       
         <li>
-          <a href="/2020/09/24/Vue3源码学习/runtime-core/">学习Vue3源码</a>
+          <a href="/2020/09/28/Vue3源码学习/Ref/">学习Vue3源码--Ref篇</a>
+        </li>
+      
+        <li>
+          <a href="/2020/09/24/Vue3源码学习/runtime-core/">学习Vue3源码 - runtime-core 篇</a>
         </li>
       
         <li>
@@ -563,10 +596,6 @@ finish
       
         <li>
           <a href="/2020/05/22/每周一段JavaScript权威指南/week3/">每周一段JavaScript权威指南-第三周</a>
-        </li>
-      
-        <li>
-          <a href="/2020/05/03/每周一段JavaScript权威指南/week2/">每周一段JavaScript权威指南-第二周</a>
         </li>
       
     </ul>
@@ -589,7 +618,7 @@ finish
         
     <h5>ARCHIVES</h5>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li></ul>
     </div>
 
         <hr>
