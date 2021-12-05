@@ -3,7 +3,7 @@ title: 第二篇，布置我的blog
 date: 2019-03-21
 tags:
 - 示例
-header-img: https://user-images.githubusercontent.com/21190726/144737920-59f0d750-8c0a-49ee-96b4-0cae85526979.jpeg
+header-img: https://user-images.githubusercontent.com/21190726/54736315-7855e580-4be5-11e9-8403-e5f1ac1a41a4.png
 catalog: true
 toc_nav_num: true
 top: 10
