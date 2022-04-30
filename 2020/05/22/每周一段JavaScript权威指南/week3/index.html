@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在dev部署">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          每周一段JavaScript权威指南-第三周 - Wings Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://GTRgoSky.github.io.git/2020/05/22/每周一段JavaScript权威指南/week3/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img-blog.csdnimg.cn/2020050614115438.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#JavaScript权威指南" title="JavaScript权威指南">JavaScript权威指南</a>
+                            
+                        </div>
+                        <h1>每周一段JavaScript权威指南-第三周</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Wings on
+                            2020-05-22
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wings Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="第三周"><a href="#第三周" class="headerlink" title="第三周"></a>第三周</h1><p>（第八章）</p>
+<blockquote>
+<p>finish</p>
+</blockquote>
+<hr>
+<h2 id="1：第八章（函数）"><a href="#1：第八章（函数）" class="headerlink" title="1：第八章（函数）"></a>1：第八章（函数）</h2><blockquote>
+<p>函数是一段：只定义一次，但是可以被执行或调用任意次的javascript代码。每次调用函数时会产生一个值—调用上下文（this指向）。若函数挂载在一个对象上，作为对象的一个属性，则称为对象方法。调用函数时this指向该对象。</p>
+</blockquote>
+<h3 id="1、函数定义"><a href="#1、函数定义" class="headerlink" title="1、函数定义"></a>1、函数定义</h3><p>   定义&amp;&amp;声明：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义表达式</span></span><br><span class="line"><span class="keyword">var</span> fun = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="comment">// 生命表达式</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fun</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="comment">// 自我调用：(此时一定要有一个终止条件，防止无限递归，造成内存泄漏)</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">self</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(xxx) <span class="keyword">return</span>;</span><br><span class="line">    slef();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="2、函数调用："><a href="#2、函数调用：" class="headerlink" title="2、函数调用："></a>2、函数调用：</h3><pre><code>1、调用方式：
+    1、作为函数 -》function a() {}
+    2、作为方法 -》obj.a = function(){}
+    3、作为构造函数 -》new A(){}
+    4、通过call/apply间接调用。 a.call(context, arguments);
+2、构造函数调用：
+    构造函数调用创建一个新的空对象（或者是包含构造函数中this指向的属性对象）；
+    这个对象继承自构造函数的prototype（obj.__proto__ === Objcet.prototype）。
+    构造函数试图初始化这个新创建的对象，并将这个对象用作其调用上下文。
+    即构造函数中的this指向这个新对象。如果构造函数使用return返回一个值。则新实例则等于这个返回值。
+3、间接调用：
+    通过apply/call间接的调用方法并指定具体的调用上下文（this）
+</code></pre><h3 id="3、函数的参数："><a href="#3、函数的参数：" class="headerlink" title="3、函数的参数："></a>3、函数的参数：</h3><pre><code>1、arguments是指向实参对象的引用。且它是一个类数组对象。
+2、在严格模式下的arguments：
+    举例验证严格与非严格模式下arguments的区别：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params">x</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">arguments</span>[<span class="number">0</span>] === x;</span><br><span class="line">    <span class="built_in">arguments</span>[<span class="number">0</span>] = <span class="literal">null</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(x);</span><br><span class="line">    <span class="comment">// 在严格模式下输出的x依然为传入值，但在非严格模式下输出的x为null</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>3、callee和caller属性：
+是argument的自带属性。callee指代当前正在执行的函数。caller则指代调用当前在执行函数的函数。
+在严格模式中不可用。caller是非标准，但是浏览器厂商大多实现了。
+</code></pre><h3 id="4、作为值得函数："><a href="#4、作为值得函数：" class="headerlink" title="4、作为值得函数："></a>4、作为值得函数：</h3><pre><code>函数不仅是一种语法也是值。也就是说函数可以赋值给变量。
+即function x(fun) {fun();} =&gt; 传入fun是一个方法。
+</code></pre><blockquote>
+<p>提前剧透：一般函数式编程会把函数当作一个值来传入一个函数，并且像操控对象一样操控它。</p>
+</blockquote>
+<h3 id="5、闭包："><a href="#5、闭包：" class="headerlink" title="5、闭包："></a>5、闭包：</h3><p>JavaScript采用的是词法作用域。也就是说，函数的执行依赖于变量作用域。这个作用域是在函数定义的时候就决定的。而不是在调用的时候确定的。</p>
+<p>为了实现这种逻辑：函数对象的内部不仅包含代码逻辑，还必须引入当前的作用域链。</p>
+<p>函数对象可以通过作用域链相互关联起来，函数体内部的变量都可以保存在函数作用域内。（闭包）</p>
+<blockquote>
+<p>复习作用域链：<br>假设将局部变量看做成一个自定义对象的属性（obj.x)。这个自定义对象可看作当前作用域链的指向(或者可以理解为挂载)对象<br><br>每一段js代码都有一个关联作用域链。当使用局部变量时，可以理解为在当前作用域对象上找该属性，如果没找到，顺着作用域链继续向上查找。直到找到顶部，若没有则报错。<br><br>所有作用域链的顶部都死global全局对象<br><br>一个正常函数作用域链包含两个对象。一个是当前函数作用域对象，另一个是全局对象。<br>当是嵌套函数时，至少包含3个作用域对象。<br><br>当定义一个函数时，其实是保存了一个作用域链，但此时当前函数的作用域对象没有挂在该作用域链上。<br><br>当执行一个函数时，函数会创建一个新对象，将所有变量属性挂在它身上，并且该对象被添加在之前保存的作用域链上。<br><br>在内嵌函数中，每次调用外部函数，内部函数的作用域链都会新生成（都是不同的）。因为每次调用外部作用域链也是不同的。</p>
+</blockquote>
+<p>闭包：调用函数时所指向的作用域链和定义时的作用域链不是同一个。（即外部函数将嵌套函数作为返回值返回时）。</p>
+<blockquote>
+<p>我的理解是在定义时生成了一个作用域链-》function p() {return function c(){}};<br><br>而使用时，首先 var c = p(); 此时生成了一个关于c对象的新作用域链。所以作用域链有所不同。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 举个例子：</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">p</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> arg = <span class="string">''</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">c</span>(<span class="params"></span>) </span>&#123;<span class="built_in">console</span>.log(arg)&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = p(); <span class="comment">// 作用域链：a -&gt; c -&gt; p;</span></span><br><span class="line"><span class="keyword">var</span> b = p(); <span class="comment">// b -&gt; c -&gt; p;</span></span><br><span class="line"><span class="comment">// p中的arg持续在a/b的作用域对象上。所以不会被垃圾回收。持续存在。</span></span><br><span class="line"><span class="comment">// 而且a，b是两个不同的作用域对象（新的）。</span></span><br><span class="line"><span class="comment">// 这也说明了，每次声明都会生成一个新的作用域对象和作用域链。</span></span><br></pre></td></tr></table></figure>
+<h3 id="6、函数的属性、方法、构造函数"><a href="#6、函数的属性、方法、构造函数" class="headerlink" title="6、函数的属性、方法、构造函数"></a>6、函数的属性、方法、构造函数</h3><pre><code>1、函数的length：
+    代表函数期望的实参个数。而arguments.length则代表函数实际传入形参的个数。
+2、prototype:
+    每个函数都有该属性，该属性指向一个对象，该对象即为原型对象。当函数用作构造函数时，新创建的对象就会将该原型对象挂在自己的原型链上。
+3、call/apply：
+    第一个参数为执行函数上下文的指定（this指向）。在严格模式中，this严格按照传入的值指定。在非严格模式中，若传入的是null或undefined则this指向的是全局对象。
+4、bind：
+    将函数绑定在某个对象上（第一个参数传入的值机位该对象）
+    若将bind用作构造函数，则将忽略绑定的对象，而是以构造函数的方式进行调用。
+    bind生成的函数无prototype属性，所以新实例将继承原始构造函数的prototype。
+    bind参数为持续绑定的（实参在调用时被绑定）。举例：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 非严格模式下(严格模式null会报错)</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params">x, y</span>) </span>&#123;<span class="keyword">this</span>.x = x; <span class="keyword">this</span>.y =y;&#125;;</span><br><span class="line"><span class="keyword">var</span> b = a.bind(<span class="literal">null</span>, <span class="number">1</span>);</span><br><span class="line"><span class="comment">// b(2) =&gt; x == 1 ; y == 2;</span></span><br><span class="line"><span class="keyword">var</span> c = <span class="keyword">new</span> b(<span class="number">3</span>); <span class="comment">// c =&gt; &#123;x: 1, y: 3&#125;</span></span><br></pre></td></tr></table></figure>
+<pre><code>5、toString：
+    一般返回函数的完整源码字符串形式。内置函数返回的则是一个[native code];
+6、Function()构造函数：
+    可以在运行时动态创建函数并编译。
+    它创建的函数的this永远指向顶层。
+    eg： var f = new Function(&apos;x&apos;, &apos;y&apos;, &quot;return x * y;&quot;) =&gt; 
+    var f = function(x, y) {return x * y};
+7、可调用对象：
+    可以调用执行但不是真正的函数对象（概念类似类数组）
+    举例document.getElementById.
+    Regexp();
+</code></pre><h3 id="7、函数式编程："><a href="#7、函数式编程：" class="headerlink" title="7、函数式编程："></a>7、函数式编程：</h3><blockquote>
+<p>在Javascript中，可以像操控对象一样操控函数，不关心函数发生的状态，而只关心得到的结果。即为函数式编程。<br><br>类似Array.map(function(el) {});传入了函数，但是开发者不知道map对函数做了怎样的处理。只知道返回的el参数为数组的每个元素。</p>
+</blockquote>
+<pre><code>1、高阶函数：   
+    接受一个或多个函数，并返回一个新函数以供调用。eg:
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params">f, g</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 内部函数的this指向了调用他们的对象。</span></span><br><span class="line">        f.call(<span class="keyword">this</span>, g.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// var b = a(fun1, fun2);</span></span><br><span class="line"><span class="comment">// b(arg);</span></span><br></pre></td></tr></table></figure>
+<pre><code>2、不完全函数：
+    直接上例子：
+    fun(1, 2, 3, 4) =&gt; fun(1, 2)(3, 4);
+3、记忆：
+    利用闭包保存局部变量的技术，将已经处理过的值保存在局部变量中，并且在下一次使用函数时，优先查询变量中是否含有该值。
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">m</span>(<span class="params">f</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> cache = &#123;&#125;;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 函数处理 得到一个唯一标识key（对应一种操作）. value(对应该操作的值)</span></span><br><span class="line">        <span class="keyword">if</span>(key <span class="keyword">in</span> cache) <span class="keyword">return</span> cache[key];</span><br><span class="line">        <span class="keyword">return</span> cache[key] = value</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><pre><code>1、this指向调用上下文
+2、
+    1）定义表达式：var a = function(){}; 声明表达式：function a() {};
+    2）函数名称自我调用
+    3）定义表达式出现任意位置，但是声明表达式不能出现在循环中。
+3、
+    1）函数的四种调用方式。
+    2）嵌套函数的this不指向调用他的函数。若是方法调用则this指向调用他的对象，若是函数调用this指向全局或者undefined
+    3）构造函数的实例上下文为自己。vm.__proto__ == Function.prototype；
+4、
+    1）arguments指向实参对对象引用。
+    2）严格模式中arguments无法修改形参的值，非严格模式中可以。
+5、
+    1）函数作用域是在定义时确定的。
+    2）函数对象通过作用域链连接，并可以将变量保存在内部。这类使用方法我们称为闭包
+    3）定义和调用函数不是相同作用域链
+    4）每次定义表达式后，都会形成新的作用域链。
+6、
+    1）call/apply的第一个参数是调用上下文（this指向）
+    2）bind不立即执行，持续绑定传入的形参。（其实可以理解为定义时，作用域对象就把传入的形参绑定在自身属性了）
+    3）bind生成的函数的length是函数参数个数（绑定过的个数）。
+    4）函数的length是定义时需要的形参个数。
+    5）bind方法生成的函数无prototype，所以生成实例原型链挂载的是指向原函数的原型对象。
+    6）Function构造函数生成的作用域对象为Global。
+7、
+    1）像操控对象一样操控函数，不关心传入函数的内容和状态称为函数式编程模式。
+    2）高阶函数，接受一个或多个函数并返回函数。
+    3）不完全函数；
+    4）记忆：函数中利用闭包来保留一个对象用于存储历史数据。
+</code></pre>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/06/06/每周一段JavaScript权威指南/week4/" data-toggle="tooltip" data-placement="top" title="每周一段JavaScript权威指南-第四周">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/05/03/每周一段JavaScript权威指南/week2/" data-toggle="tooltip" data-placement="top" title="每周一段JavaScript权威指南-第二周">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents    toc是根据#作为锚链接的 -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第三周"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">第三周</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1：第八章（函数）"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1：第八章（函数）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、函数定义"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">1、函数定义</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、函数调用："><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">2、函数调用：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、函数的参数："><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text">3、函数的参数：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4、作为值得函数："><span class="toc-nav-number">1.1.4.</span> <span class="toc-nav-text">4、作为值得函数：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5、闭包："><span class="toc-nav-number">1.1.5.</span> <span class="toc-nav-text">5、闭包：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6、函数的属性、方法、构造函数"><span class="toc-nav-number">1.1.6.</span> <span class="toc-nav-text">6、函数的属性、方法、构造函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7、函数式编程："><span class="toc-nav-number">1.1.7.</span> <span class="toc-nav-text">7、函数式编程：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#总结："><span class="toc-nav-number">1.1.8.</span> <span class="toc-nav-text">总结：</span></a></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JavaScript权威指南" title="JavaScript权威指南">JavaScript权威指南</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://github.com/GTRgoSky/TestLOL" target="_blank">GitHub-Demo</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                <p class="copyright text-muted">
+                    Copyright &copy; Wings 2022 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    主题来自: <a target="_black" href="https://github.com/huweihuang/hexo-theme-huweihuang/blob/master/_config.yml">这里</a>
+                    <a target="_black" href="https://www.huweihuang.com/">这里</a>
+                    <br>
+                    小美女华华专属
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://GTRgoSky.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://GTRgoSky.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

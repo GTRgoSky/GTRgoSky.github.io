@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在dev部署">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          Wings Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://GTRgoSky.github.io.git/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://user-images.githubusercontent.com/21190726/144737920-59f0d750-8c0a-49ee-96b4-0cae85526979.jpeg') 
+            /*config*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="site-heading">
+                        <h1>Wings Blogs</h1>
+                        <!--<hr class="small">-->
+                        <span class="subheading"></span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wings Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+                <!-- Main Content -->
+
+
+<div class="post-preview">
+
+    <a href="/2019/03/21/布置我的blog/">
+        <h2 class="post-title">
+            
+                <i class="fa fa-thumb-tack" style="color:#F4711F"></i>
+                <font color="#F4711F">置顶 -</font>
+            
+            第二篇，布置我的blog
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            如何布置我的Blog：准确的找到开发位置release分支的  blog/source/_post路径
+我需要布置一个头部banner在themes\huweihuang_config.yml的文件中，有一个 【header-img】 选项。给予图片线上地址，即可完成banner替换。可以看到在在themes\huweihuang\layout_partial\header.ejs文件中有下......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2019-03-21
+        </p>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2022/04/30/简单算法学习/股票六杰题型/">
+        <h2 class="post-title">
+            
+            简单算法学习--股票六杰题型
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            题目地址：123456789101112131415161718// 通过代码来详细解释// 这类题型 主要思路是 dp[i 天数][k 交易次数][0 | 1 是否持有]// 我们最终要求的可获得的最大收益就是 dp[n - 1][k][0]，代表最后一天将股票卖出后的最大收益// 所以一切的情况都归类如下：// 今天手中没有持有股票，有两种可能：// 1. 昨天没有持有，今天选择不操作。......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2022-04-30
+        </p>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2021/12/26/简单算法学习/quickSort/">
+        <h2 class="post-title">
+            
+            简单算法学习--快速排序
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            学习内容
+学习分而治之；学习快速排序
+
+分而治之
+一种著名的递归式解决问题的办法（D&amp;C：divide and conquer)
+
+使用分治需要2个步骤：    1、找出基线条件，且这种条件必须尽可能的简单    2、不断将问题分解，直到符合基线条件
+TIP：    编写涉及数组的递归函数时，基线条件通常是数组为空或只包含一个元素。    陷入困境时，请检查基线条件是不是这样。
+交一......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2021-12-26
+        </p>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2021/12/05/简单算法学习/recursion/">
+        <h2 class="post-title">
+            
+            简单算法学习--递归篇
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            学习内容
+如何将问题分为基线条件和递归条件
+
+先展示两段代码：123456789101112131415161718192021// 迭代：whilefunction iteration(box) &#123;    const inner = [box]    while(inner.length) &#123;        const item = inner[0];        i......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2021-12-05
+        </p>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2021/12/05/简单算法学习/sortSelect/">
+        <h2 class="post-title">
+            
+            简单算法学习--选择排序
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            学习内容
+数组、连标；选择排序
+
+数组和链表
+数组意味着所有数据在内存中是相连的。链表中的元素则是可以存在内存中任意地方，通过指针串联。
+
+ 在数组中添加/删除数据很麻烦O(n) 创建数组时，系统会申请内存中一串相连的内存。但是当你需要添加新元素时，如果相连内存空间不够，就需要把整个数组移动。但是当你需要添加新元素时，数组的后面数据都会被操作移动到后一位。当然也可以提前申请多个，但是会造成内......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2021-12-05
+        </p>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/10/13/Vue3源码学习/baseHandlers/">
+        <h2 class="post-title">
+            
+            学习Vue3源码-- baseHandlers篇
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            baseHandlers
+packages\reactivity\src\baseHandlers.ts1// 辅助 reactive 的劫持操作
+
+mutableHandlers当target是对象或者数组时, 对proxy进行 基础 配置
+1234567const mutableHandlers: ProxyHandler&lt;object&gt; = &#123;    get, /......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2020-10-13
+        </p>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/10/13/Vue3源码学习/reactive/">
+        <h2 class="post-title">
+            
+            学习Vue3源码-- reactive篇
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            reactive
+packages\reactivity\src\reactive.ts1const r = reactive(&#123;&#125;)
+
+声明全局 代理Map/只读Mapconst reactiveMap = new WeakMap&lt;Target, any&gt;()
+const readonlyMap = new WeakMap&lt;Target, any&gt......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2020-10-13
+        </p>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/09/28/Vue3源码学习/effect/">
+        <h2 class="post-title">
+            
+            学习Vue3源码--effect篇
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            effect篇
+packages\reactivity\src\effect.ts
+
+targetMap创建一个 全局 weakMap 对象，用于缓存所有 有 副作用的目标
+effectStack副作用堆栈 一个数组List，先进后出 [FX 干嘛用的]
+activeEffect一个 正在被激活的 副作用 Function, 并且挂在了一些对象
+isEffect如果fn 存在 且具有副作用标......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2020-09-28
+        </p>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/09/27/Vue3源码学习/Ref/">
+        <h2 class="post-title">
+            
+            学习Vue3源码--Ref篇
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Ref
+packages\reactivity\src\ref.ts1const r = ref(rawValue, [shallow = false])
+
+ref()1. 执行 createRef(rawValue)
+2. 判断 rawValue 是否是一个Ref对象，如果是直接返回，如果不是则实例化 RefImpl 
+    2.1 RefImpl 接受 rawValue, shallo......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2020-09-27
+        </p>
+    
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/09/24/Vue3源码学习/runtime-core/">
+        <h2 class="post-title">
+            
+            学习Vue3源码 - runtime-core 篇
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            目录:runtime-core
+持续更新中
+
+文件目录https://juejin.im/post/6844903957421096967
+案例在TestLoL的Vite尝试创建APP (createApp)1. import App from &apos;./App.vue&apos;; - 生成一个App.vue 的 render 函数，并绑定在 export 导出的 render 对象......
+        </div>
+    </a>
+    
+        <p class="post-meta">
+            Posted by Wings on
+            2020-09-24
+        </p>
+    
+
+</div>
+<hr>
+
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+    
+        <li class="next">
+            <a href="/page/2/">Older Posts &rarr;</a>
+        </li>
+    
+</ul>
+
+
+
+                <br>
+
+                <!-- require APlayer -->
+                
+
+                <!-- 如果开启评论功能 -->
+                
+            </div>
+
+          <!-- Sidebar Container -->
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+        <!-- Featured Tags -->
+
+<section>
+    <!-- no hr -->
+    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+            
+            <a href="/tags/#示例" title="示例" rel="2">示例</a>
+            
+        
+            
+            <a href="/tags/#Vue3" title="Vue3" rel="5">Vue3</a>
+            
+        
+            
+            <a href="/tags/#JavaScript权威指南" title="JavaScript权威指南" rel="5">JavaScript权威指南</a>
+            
+        
+            
+            <a href="/tags/#algorithm" title="algorithm" rel="4">algorithm</a>
+            
+        
+    </div>
+</section>
+
+        <hr>
+    
+        <!-- Short About -->
+<section class="visible-md visible-lg">
+    <h5><a href="/about/">ABOUT ME</a></h5>
+    <div class="short-about">
+
+        
+            <img id = "avatar_pic" src="https://img-blog.csdnimg.cn/20200506141449764.jpg" />
+        
+
+        
+
+        <!-- SNS Link -->
+        <ul class="list-inline">
+            
+            
+            
+
+            
+
+            
+
+            
+                <li>
+                    <a target="_blank"  href="https://github.com/GTRgoSky">
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-2x"></i>
+                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                </li>
+            
+            
+            
+            
+        </ul>
+    </div>
+</section>
+
+        <hr>
+    
+        
+  <h5>RECENT POSTS</h3>
+  <div class="widget">
+    <ul>
+      
+        <li>
+          <a href="/2022/04/30/简单算法学习/股票六杰题型/">简单算法学习--股票六杰题型</a>
+        </li>
+      
+        <li>
+          <a href="/2021/12/26/简单算法学习/quickSort/">简单算法学习--快速排序</a>
+        </li>
+      
+        <li>
+          <a href="/2021/12/05/简单算法学习/recursion/">简单算法学习--递归篇</a>
+        </li>
+      
+        <li>
+          <a href="/2021/12/05/简单算法学习/sortSelect/">简单算法学习--选择排序</a>
+        </li>
+      
+        <li>
+          <a href="/2020/10/13/Vue3源码学习/baseHandlers/">学习Vue3源码-- baseHandlers篇</a>
+        </li>
+      
+    </ul>
+  </div>
+
+        <hr>
+    
+        <!-- Friends Blog -->
+
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+
+    
+        <li><a href="https://github.com/GTRgoSky/TestLOL" target="_blank">GitHub-Demo</a></li>
+    
+</ul>
+
+        <hr>
+    
+        
+    <h5>ARCHIVES</h5>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">十二月 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">十月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">九月 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/">九月 2018</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+
+        <hr>
+    
+</div>
+
+        
+    </div>
+</div>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                <p class="copyright text-muted">
+                    Copyright &copy; Wings 2022 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    主题来自: <a target="_black" href="https://github.com/huweihuang/hexo-theme-huweihuang/blob/master/_config.yml">这里</a>
+                    <a target="_black" href="https://www.huweihuang.com/">这里</a>
+                    <br>
+                    小美女华华专属
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://GTRgoSky.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://GTRgoSky.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在dev部署">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          学习Vue3源码-- baseHandlers篇 - Wings Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://GTRgoSky.github.io.git/2020/10/13/Vue3源码学习/baseHandlers/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img-blog.csdnimg.cn/2020050614115438.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Vue3" title="Vue3">Vue3</a>
+                            
+                        </div>
+                        <h1>学习Vue3源码-- baseHandlers篇</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Wings on
+                            2020-10-13
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wings Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="baseHandlers"><a href="#baseHandlers" class="headerlink" title="baseHandlers"></a>baseHandlers</h2><blockquote>
+<p>packages\reactivity\src\baseHandlers.ts<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 辅助 reactive 的劫持操作</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h2 id="mutableHandlers"><a href="#mutableHandlers" class="headerlink" title="mutableHandlers"></a>mutableHandlers</h2><pre><code>当target是对象或者数组时, 对proxy进行 基础 配置
+</code></pre><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> mutableHandlers: ProxyHandler&lt;object&gt; = &#123;</span><br><span class="line">    get, <span class="comment">// createGetter()</span></span><br><span class="line">    set,</span><br><span class="line">    deleteProperty,</span><br><span class="line">    has,</span><br><span class="line">    ownKeys</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="readonlyHandlers"><a href="#readonlyHandlers" class="headerlink" title="readonlyHandlers"></a>readonlyHandlers</h2><pre><code>当目标函数时readonly时
+readonly的数据劫持。get触发readonlyGet ， set =&gt; true， deleteProperty =&gt; true
+只读不会触发 track 
+</code></pre><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> readonlyGet = <span class="comment">/*#__PURE__*/</span> createGetter(<span class="literal">true</span>)</span><br><span class="line"><span class="keyword">const</span> readonlyHandlers: ProxyHandler&lt;object&gt; = &#123;</span><br><span class="line">  get: readonlyGet,</span><br><span class="line">  set(target, key) &#123;</span><br><span class="line">    <span class="keyword">if</span> (__DEV__) &#123;</span><br><span class="line">      <span class="built_in">console</span>.warn(</span><br><span class="line">        <span class="string">`Set operation on key "<span class="subst">$&#123;<span class="built_in">String</span>(key)&#125;</span>" failed: target is readonly.`</span>,</span><br><span class="line">        target</span><br><span class="line">      )</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  deleteProperty(target, key) &#123;</span><br><span class="line">    <span class="keyword">if</span> (__DEV__) &#123;</span><br><span class="line">      <span class="built_in">console</span>.warn(</span><br><span class="line">        <span class="string">`Delete operation on key "<span class="subst">$&#123;<span class="built_in">String</span>(key)&#125;</span>" failed: target is readonly.`</span>,</span><br><span class="line">        target</span><br><span class="line">      )</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="shallowReactiveHandlers"><a href="#shallowReactiveHandlers" class="headerlink" title="shallowReactiveHandlers"></a>shallowReactiveHandlers</h2><pre><code>浅劫持
+</code></pre><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当劫持设置为 浅 劫持时</span></span><br><span class="line"><span class="comment">// 只会对目标函数进行劫持，而不会递归操作他的子对象</span></span><br><span class="line"><span class="keyword">const</span> shallowGet = <span class="comment">/*#__PURE__*/</span> createGetter(<span class="literal">false</span>, <span class="literal">true</span>)</span><br><span class="line"><span class="comment">// 不在关注 oldValue 是否是一个 Ref</span></span><br><span class="line"><span class="keyword">const</span> shallowSet = <span class="comment">/*#__PURE__*/</span> createSetter(<span class="literal">true</span>)</span><br><span class="line"><span class="keyword">const</span> shallowReactiveHandlers: ProxyHandler&lt;object&gt; = extend(</span><br><span class="line">  &#123;&#125;,</span><br><span class="line">  mutableHandlers,</span><br><span class="line">  &#123;</span><br><span class="line">    get: shallowGet,</span><br><span class="line">    set: shallowSet</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="shallowReadonlyHandlers"><a href="#shallowReadonlyHandlers" class="headerlink" title="shallowReadonlyHandlers"></a>shallowReadonlyHandlers</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> shallowReadonlyGet = <span class="comment">/*#__PURE__*/</span> createGetter(<span class="literal">true</span>, <span class="literal">true</span>)</span><br><span class="line"><span class="comment">// 基于readonlyHandlers 重写 get</span></span><br><span class="line"><span class="keyword">const</span> shallowReadonlyHandlers: ProxyHandler&lt;object&gt; = extend(</span><br><span class="line">  &#123;&#125;,</span><br><span class="line">  readonlyHandlers,</span><br><span class="line">  &#123;</span><br><span class="line">    get: shallowReadonlyGet</span><br><span class="line">  &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="arrayInstrumentations"><a href="#arrayInstrumentations" class="headerlink" title="arrayInstrumentations"></a>arrayInstrumentations</h2><pre><code>[FX 作用?]
+劫持了一系列数组方法
+</code></pre><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> arrayInstrumentations: Record&lt;string, <span class="built_in">Function</span>&gt; = &#123;&#125;</span><br><span class="line"><span class="comment">// instrument identity-sensitive Array methods to account for possible reactive</span></span><br><span class="line"><span class="comment">// values</span></span><br><span class="line">;([<span class="string">'includes'</span>, <span class="string">'indexOf'</span>, <span class="string">'lastIndexOf'</span>] <span class="keyword">as</span> <span class="keyword">const</span>).forEach(<span class="function"><span class="params">key</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> method = <span class="built_in">Array</span>.prototype[key] <span class="keyword">as</span> any</span><br><span class="line">  arrayInstrumentations[key] = <span class="function"><span class="keyword">function</span>(<span class="params">this: unknown[], ...args: unknown[]</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> arr = toRaw(<span class="keyword">this</span>)</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, l = <span class="keyword">this</span>.length; i &lt; l; i++) &#123;</span><br><span class="line">      track(arr, TrackOpTypes.GET, i + <span class="string">''</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// we run the method using the original args first (which may be reactive)</span></span><br><span class="line">    <span class="keyword">const</span> res = method.apply(arr, args)</span><br><span class="line">    <span class="keyword">if</span> (res === <span class="number">-1</span> || res === <span class="literal">false</span>) &#123;</span><br><span class="line">      <span class="comment">// if that didn't work, run it again using raw values.</span></span><br><span class="line">      <span class="keyword">return</span> method.apply(arr, args.map(toRaw))</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> res</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// instrument length-altering mutation methods to avoid length being tracked</span></span><br><span class="line"><span class="comment">// which leads to infinite loops in some cases (#2137)</span></span><br><span class="line">;([<span class="string">'push'</span>, <span class="string">'pop'</span>, <span class="string">'shift'</span>, <span class="string">'unshift'</span>, <span class="string">'splice'</span>] <span class="keyword">as</span> <span class="keyword">const</span>).forEach(<span class="function"><span class="params">key</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> method = <span class="built_in">Array</span>.prototype[key] <span class="keyword">as</span> any</span><br><span class="line">  arrayInstrumentations[key] = <span class="function"><span class="keyword">function</span>(<span class="params">this: unknown[], ...args: unknown[]</span>) </span>&#123;</span><br><span class="line">    pauseTracking()</span><br><span class="line">    <span class="keyword">const</span> res = method.apply(<span class="keyword">this</span>, args)</span><br><span class="line">    enableTracking()</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="createGetter"><a href="#createGetter" class="headerlink" title="createGetter"></a>createGetter</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里是 reactive 的 get 代理方法</span></span><br><span class="line"><span class="comment">// 一个常规Proxy的配置</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createGetter</span>(<span class="params">isReadonly = false, shallow = false</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// target : 目标函数; key: 目标函数的属性值; </span></span><br><span class="line">    <span class="comment">// receiver: 它总是指向原始的读操作所在的那个对象，一般情况下就是 Proxy 实例</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params">target: Target, key: string | symbol, receiver: object</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 对标记对象做特殊处理</span></span><br><span class="line">        <span class="keyword">if</span> (key === ReactiveFlags.IS_REACTIVE) &#123; <span class="comment">// 如果 key === __v_isReactive</span></span><br><span class="line">            <span class="keyword">return</span> !isReadonly</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key === ReactiveFlags.IS_READONLY) &#123; <span class="comment">// 如果 key === __v_isReadonly</span></span><br><span class="line">            <span class="keyword">return</span> isReadonly</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (</span><br><span class="line">            key === ReactiveFlags.RAW &amp;&amp;</span><br><span class="line">            receiver === (isReadonly ? readonlyMap : reactiveMap).get(target)</span><br><span class="line">        ) &#123; <span class="comment">// 如果 key === __v_raw &amp;&amp; receiver 已经在 Map 中 则表明 target 已经被代理,直接返回</span></span><br><span class="line">            <span class="keyword">return</span> target</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">const</span> targetIsArray = isArray(target)</span><br><span class="line">        <span class="comment">// [FX] 如果是个数组,并且 arrayInstrumentations (参照下面的) 拥有对应key</span></span><br><span class="line">        <span class="comment">// 主要是劫持数组的一些特殊方法 做加工后返回给实际对象使用</span></span><br><span class="line">        <span class="keyword">if</span> (targetIsArray &amp;&amp; hasOwn(arrayInstrumentations, key)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">Reflect</span>.get(arrayInstrumentations, key, receiver)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取 target[key]</span></span><br><span class="line">        <span class="keyword">const</span> res = <span class="built_in">Reflect</span>.get(target, key, receiver)</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 判断是否是 Symbol 对象</span></span><br><span class="line">        <span class="comment">// builtInSymbols 作用: 获取 Symbol 对象的所有 key 对应的值, 然后 勇 isSymbol 过滤;得到是 Symbol 对象 的值 生成一个 set 对象</span></span><br><span class="line">        <span class="comment">// 如果key 是一个  Symbol 对象 或者 是原型/ref 则直接返回 res 值</span></span><br><span class="line">        <span class="keyword">const</span> keyIsSymbol = isSymbol(key)</span><br><span class="line">        <span class="keyword">if</span> (</span><br><span class="line">            keyIsSymbol</span><br><span class="line">                ? builtInSymbols.has(key <span class="keyword">as</span> symbol)</span><br><span class="line">                : key === <span class="string">`__proto__`</span> || key === <span class="string">`__v_isRef`</span></span><br><span class="line">        ) &#123;</span><br><span class="line">            <span class="keyword">return</span> res</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果不是 只读</span></span><br><span class="line">        <span class="keyword">if</span> (!isReadonly) &#123;</span><br><span class="line">            <span class="comment">// 直接对目标进行 track 追踪</span></span><br><span class="line">            track(target, TrackOpTypes.GET, key)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 肤浅模式 直接返回 若不是,则将 res 对象 进行深度追踪</span></span><br><span class="line">        <span class="keyword">if</span> (shallow) &#123;</span><br><span class="line">            <span class="keyword">return</span> res</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 这里是将 ref 直接展开</span></span><br><span class="line">        <span class="keyword">if</span> (isRef(res)) &#123;</span><br><span class="line">            <span class="comment">// ref unwrapping - does not apply for Array + integer key.</span></span><br><span class="line">            <span class="comment">// 不适用数组+整数键。</span></span><br><span class="line">            <span class="keyword">const</span> shouldUnwrap = !targetIsArray || !isIntegerKey(key)</span><br><span class="line">            <span class="keyword">return</span> shouldUnwrap ? res.value : res</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 如果 res 是一个 对象</span></span><br><span class="line">        <span class="keyword">if</span> (isObject(res)) &#123;</span><br><span class="line">            <span class="comment">// Convert returned value into a proxy as well. we do the isObject check</span></span><br><span class="line">            <span class="comment">// here to avoid invalid value warning. Also need to lazy access readonly</span></span><br><span class="line">            <span class="comment">// and reactive here to avoid circular dependency.</span></span><br><span class="line">            <span class="comment">// 递归执行</span></span><br><span class="line">            <span class="keyword">return</span> isReadonly ? readonly(res) : reactive(res)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> res</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="createSetter"><a href="#createSetter" class="headerlink" title="createSetter"></a>createSetter</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createSetter</span>(<span class="params">shallow = false</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">set</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    target: object,</span></span></span><br><span class="line"><span class="function"><span class="params">    key: string | symbol,</span></span></span><br><span class="line"><span class="function"><span class="params">    value: unknown,</span></span></span><br><span class="line"><span class="function"><span class="params">    receiver: object</span></span></span><br><span class="line"><span class="function"><span class="params">  </span>): <span class="title">boolean</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> oldValue = (target <span class="keyword">as</span> any)[key]</span><br><span class="line">    <span class="keyword">if</span> (!shallow) &#123;</span><br><span class="line">        <span class="comment">// 获取value得原始对象</span></span><br><span class="line">      value = toRaw(value)</span><br><span class="line">      <span class="comment">// 如果 target 不是数组 且原来是个 Ref 对象，则只替换 value 值</span></span><br><span class="line">      <span class="keyword">if</span> (!isArray(target) &amp;&amp; isRef(oldValue) &amp;&amp; !isRef(value)) &#123;</span><br><span class="line">        oldValue.value = value</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// in shallow mode, objects are set as-is regardless of reactive or not</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> hadKey =</span><br><span class="line">      isArray(target) &amp;&amp; isIntegerKey(key)</span><br><span class="line">        ? <span class="built_in">Number</span>(key) &lt; target.length</span><br><span class="line">        : hasOwn(target, key) <span class="comment">// key 是否在 target 的原型链上</span></span><br><span class="line">    <span class="keyword">const</span> result = <span class="built_in">Reflect</span>.set(target, key, value, receiver)</span><br><span class="line">    <span class="comment">// don't trigger if target is something up in the prototype chain of original</span></span><br><span class="line">    <span class="comment">// 获取 receiver 的 原生对象 对比 target 如果相等， 触发 trigger 更新</span></span><br><span class="line">    <span class="keyword">if</span> (target === toRaw(receiver)) &#123;</span><br><span class="line">      <span class="keyword">if</span> (!hadKey) &#123;</span><br><span class="line">        trigger(target, TriggerOpTypes.ADD, key, value)</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (hasChanged(value, oldValue)) &#123;</span><br><span class="line">        trigger(target, TriggerOpTypes.SET, key, value, oldValue)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="deleteProperty-target-object-key-string-symbol"><a href="#deleteProperty-target-object-key-string-symbol" class="headerlink" title="deleteProperty(target: object, key: string | symbol)"></a>deleteProperty(target: object, key: string | symbol)</h2><pre><code>删除对象属性，并触发一次 trigger
+</code></pre><h2 id="has"><a href="#has" class="headerlink" title="has"></a>has</h2><pre><code>判断属性是否含有某 key ，并且 key不是 Symbol对象或者不是原生Symbol的属性值时，触发一次 track
+</code></pre><h2 id="ownKeys"><a href="#ownKeys" class="headerlink" title="ownKeys"></a>ownKeys</h2><pre><code>触发一次 track，返回自身Key
+</code></pre>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2021/12/05/简单算法学习/sortSelect/" data-toggle="tooltip" data-placement="top" title="简单算法学习--选择排序">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/10/13/Vue3源码学习/reactive/" data-toggle="tooltip" data-placement="top" title="学习Vue3源码-- reactive篇">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents    toc是根据#作为锚链接的 -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#baseHandlers"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">baseHandlers</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#mutableHandlers"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">mutableHandlers</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#readonlyHandlers"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">readonlyHandlers</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#shallowReactiveHandlers"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">shallowReactiveHandlers</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#shallowReadonlyHandlers"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">shallowReadonlyHandlers</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#arrayInstrumentations"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">arrayInstrumentations</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#createGetter"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">createGetter</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#createSetter"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">createSetter</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#deleteProperty-target-object-key-string-symbol"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">deleteProperty(target: object, key: string | symbol)</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#has"><span class="toc-nav-number">10.</span> <span class="toc-nav-text">has</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ownKeys"><span class="toc-nav-number">11.</span> <span class="toc-nav-text">ownKeys</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Vue3" title="Vue3">Vue3</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://github.com/GTRgoSky/TestLOL" target="_blank">GitHub-Demo</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                <p class="copyright text-muted">
+                    Copyright &copy; Wings 2022 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    主题来自: <a target="_black" href="https://github.com/huweihuang/hexo-theme-huweihuang/blob/master/_config.yml">这里</a>
+                    <a target="_black" href="https://www.huweihuang.com/">这里</a>
+                    <br>
+                    小美女华华专属
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://GTRgoSky.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://GTRgoSky.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

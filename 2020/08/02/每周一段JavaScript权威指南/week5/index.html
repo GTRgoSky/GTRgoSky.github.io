@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在dev部署">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          每周一段JavaScript权威指南-第五周 - Wings Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://GTRgoSky.github.io.git/2020/08/02/每周一段JavaScript权威指南/week5/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img-blog.csdnimg.cn/2020050614115438.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#JavaScript权威指南" title="JavaScript权威指南">JavaScript权威指南</a>
+                            
+                        </div>
+                        <h1>每周一段JavaScript权威指南-第五周</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Wings on
+                            2020-08-02
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wings Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="第四周"><a href="#第四周" class="headerlink" title="第四周"></a>第四周</h1><p>（第十章）</p>
+<blockquote>
+<p>finish</p>
+</blockquote>
+<hr>
+<h2 id="1：第十章（正则表达式和模式匹配）"><a href="#1：第十章（正则表达式和模式匹配）" class="headerlink" title="1：第十章（正则表达式和模式匹配）"></a>1：第十章（正则表达式和模式匹配）</h2><blockquote>
+<p>是一个描述字符模式的对象。由RegExp类表示正则表达式</p>
+</blockquote>
+<h3 id="1、正则表达式的定义"><a href="#1、正则表达式的定义" class="headerlink" title="1、正则表达式的定义"></a>1、正则表达式的定义</h3><pre><code>可以由RegExp来创建正则表达式对象，也可以直接由/RegExp/来创建字符串形式的正则表达式
+
+0、RegExp直接量和对象的创建：
+    1）程序运行时每次遇到对象直接量（初始化表达式如：{},[])的时候都会创建新对象。（如：var a = []；每次执行到这一句都会创建一个新的空数组。）
+    在正则表达式中，一个直接量在执行它时会执行为一个RegExp对象。同一个正则表达式返回的都是一个新对象。
+
+1、直接量字符：
+    参照正则表达式直接字符量表
+
+2、字符类：
+    将直接量字符单独放进方括号内就组成了字符类（[]有或者的含义），一个字符类可以匹配它所包含的任意字符。
+    eg：/[abc]/ 就是和字母 a,b,c中的任意一个匹配就通过
+    另外可以通过 ^ 字符来取非；eg：/[^abc]/ 取任意非a,b,c的字符。
+
+3、重复：
+    正则模式之后跟随 特殊字符 用以表示重复的标记。（这里注意 * 和 + 的区别）
+    1）非贪婪重复：
+        一般的直接添加重复字符的是贪婪匹配，他们会尽可能多的取匹配。而且允许后续的字符串继续匹配。
+        而我们可以使用 ？ 跟随使表达式变成非贪婪匹配。
+        eg： aaa： /a+/ 匹配所有a 但是 /a+?/ 匹配 第一个a。
+
+4、选择、分组、引用：
+    1）正则表达式的语法还包括指定的选择项（ | ），子表达式分组（ （） ）和引用前一子表达式的特殊字符（  ）。
+    eg:字符 | 可以提供分割选择匹配 /ab|cd/ 匹配ab 或者 cd
+    2）选择项的尝试匹配次序是从左到右，直到发现了匹配项。如果左边的选择项匹配，就忽略右侧。
+    3）正则表达式的（）有多种作用。
+        1.它可以把单独的项目合成子表达式，以便像处理单独单元一样处理（）里的内容。
+    eg：/java(script)/ -&gt;可以匹配到java也可以匹配到JavaScript。
+        2.第二个作用是在一个完整的模式中定义子模式。当一个正则表达式成功的和目标字符串相匹配时，可以从目标串中抽出和圆括号中相匹配的部分。
+        eg：&apos;abcdefg&apos;.replace(/(bc)d(ef)/, &apos;$2&apos;) =&gt; &quot;aefg&quot; 这里的&apos;$2&apos;代表了(ef)也就是括号第二个匹配的内容。
+        3.允许在同一个正则表达式后部以农前面的子表达式。通过在字符\后面加 （一） 或 （多个数字） 实现。这个数字表示在正则表达式中的位置。\2代表的是引用第二个带括号的位置。计数位置是根据（）的左括号位置确定的
+        eg:/（ab）c（de）\2/ 可以匹配到 acde 或 acdd 因为 \2是代表又写了一个(de)
+
+5、指定匹配位置：
+    1）先行断言：在符号（？=和）之间加入一个表达式。用以说明括号内的表达式必须匹配但并不是真正意义上的匹配。
+    eg：/[Jj]ava([Ss]cript)?(?=\:)/ 可以匹配到Javascript: useful; 但匹配不到 Javascript。即要有：但是，如果我们用这个正则做匹配，他不会匹配出 ： 这个符号。
+    2）负向先行断言：（？！。用于指定接下来的字符都不必匹配。
+    eg：/Java(?!Script)(A-Z\w*)/ 可以匹配Java后面跟随一个大写字母或者多个ASCII单词，但是不能匹配JavaScript/JavaScriptA。
+
+6、修饰符：
+    修饰符用于说明高级匹配模式的规则。位置在/之外。
+    i：表示不区分大小写。g：表示匹配全局，所有符合的都会被匹配。m表示在多行模式中执行匹配。
+    其中多行模式：^表示匹配一行的开头和字符串的开头。$表示匹配行的结束和字符串的结束。
+</code></pre><h3 id="2、用于模式匹配的String方法："><a href="#2、用于模式匹配的String方法：" class="headerlink" title="2、用于模式匹配的String方法："></a>2、用于模式匹配的String方法：</h3><pre><code>本章将讨论Sting对象的一些用以执行正则表达式模式匹配和检索替换操作的方法。
+1、search方法：
+    eg：JavaScript.search(/script/i) =》匹配返回值为4（根据起始位置计算）。若没有匹配则返回-
+2、replace方法：replace（正则表达式/要被替换字符串，要替换的新字符串）
+    用于执行检索与替换操作。
+    replace的第二个参数还有可能是函数，可以动态的执行替换。该函数的返回值就是要替换成为的新值。
+    这个函数有n个参数。每个参数的含义见下面例子：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'abcdefg'</span>.replace(<span class="regexp">/(bc)d(ef)/</span>, <span class="function"><span class="keyword">function</span>(<span class="params">x,y,z,w,m</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// x匹配项，第一个括号，z第二个括号，w匹配的位置, m 原始字符串</span></span><br><span class="line">    <span class="built_in">console</span>.log(x,y,z,w,m); <span class="comment">// bcdef bc ef 1 abcdefg</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">666</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">// "a666g"</span></span><br></pre></td></tr></table></figure>
+<pre><code>3、match方法：他的唯一参数就是正则表达式或RegExp对象。返回一个由匹配结果组成的数组。如果有修饰符g则返回所有匹配结果。没有g则只返回第一个。余下元素则是正则表达式中用（）括起来的子表达式。
+eg：如果match匹配返回了一个数组a。则a[0]返回的事完整匹配。a[1]...则匹配的是第1...个括号内匹配的字符串。
+
+4、split（正则表达式）
+</code></pre><h3 id="3、RegExp对象："><a href="#3、RegExp对象：" class="headerlink" title="3、RegExp对象："></a>3、RegExp对象：</h3><pre><code>RegExp构造函数带有两个字符串参数。第一个参数包含正则表达式的主体部分。其中第二个参数是可选的，传入的是修饰符。
+
+1、RegExp的属性：
+    1）source：只读字符串，包含正则表达式的问题。
+    2）global：只读bol型。用于说明是否带有修饰符 g。
+    3）ignoreCase：只读bol型。用于说明是否带有修饰符 i。
+    4）multiline：只读bol型。用于说明是否带有修饰符m。
+    5）lastIndex：可读写证书。在 g 模式下，它存储的是下一次检索的开始位置。在exec/test方法中用到。
+
+2、RegExp的方法：
+    1）exec：对一个指定的字符串执行一个正则表达式。即对一个字符串执行匹配检索。如果他没有找到任何匹配则返回null。如果有匹配则返回一个数组。（在无g状态下）类似match。其中属性index包含了发生匹配的字符串位置。属性input引用的是正在检索的字符串。
+    但是和match不同得是。不管表达式是否具有全局修饰符g。exec都会返回一样的数组。
+    eg：&apos;aabbaa&apos;.match(/aa/) =&gt; [aa,aa]
+        var a = new RegExp(&apos;aa&apos;, &apos;g&apos;); a.exec(&apos;aabbaa&apos;) =&gt; [&apos;aa&apos;]; a.lastIndex == 2；从下一次的第二个位置开始。
+
+    2）test：和exec行为大概相同。但是返回的是bol当exec返回不为null时test返回True
+</code></pre><h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><pre><code>1、程序每次遇到对象直接量（初始化表达式）如[],{},RegExp都会创建新对象。引用表达式则不同。
+2、在正则中将字符直接量放入（）内就组成了字符类。一个字符类可以匹配他所包含的任意字符。
+3、重复（贪婪）尽可能多的去匹配，非贪婪尽可能少的去匹配。
+4、多条件匹配是，匹配次序是从左到右找到即停止。
+5、（）作用：
+    1）把单独项组合成子表达式，方便用特殊标示像处理独立单元一样处理他们。
+    2）在完整模式中定义子模式，在match或exec匹配后可单独获取到匹配。
+    3）允许在一条语句中用替代符直接引用其匹配字符。
+6、零宽断言：（？=xx），匹配xx但是获取到的匹配不包括xx。
+7、m修饰符：使用在 ^xyz$ 的正则表达式中匹配多行文本中 x 开头 z 结尾的字符串。
+8、replace中的$number 存储的是第 Number 括号匹配的值。
+9、match匹配返回一个数组，0位是匹配项，a[1,...n]是第1...n个括号的单独匹配。
+10、exec：若无匹配则返回null，若有，返回数组，（在无g状态下）与match一样。
+    在 g 下，他返回的总是一次匹配并把lastIndex赋值匹配位的下一次下标值。直到返回null，lastIndex归档为0.
+11、test和exec的lastIndex规则一样，返回的是Boolen值。有匹配True,无匹配False
+</code></pre>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/09/24/Vue3源码学习/runtime-core/" data-toggle="tooltip" data-placement="top" title="学习Vue3源码 - runtime-core 篇">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/06/06/每周一段JavaScript权威指南/week4/" data-toggle="tooltip" data-placement="top" title="每周一段JavaScript权威指南-第四周">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents    toc是根据#作为锚链接的 -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第四周"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">第四周</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1：第十章（正则表达式和模式匹配）"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1：第十章（正则表达式和模式匹配）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、正则表达式的定义"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">1、正则表达式的定义</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、用于模式匹配的String方法："><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">2、用于模式匹配的String方法：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、RegExp对象："><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text">3、RegExp对象：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#总结："><span class="toc-nav-number">1.1.4.</span> <span class="toc-nav-text">总结：</span></a></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JavaScript权威指南" title="JavaScript权威指南">JavaScript权威指南</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://github.com/GTRgoSky/TestLOL" target="_blank">GitHub-Demo</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                <p class="copyright text-muted">
+                    Copyright &copy; Wings 2022 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    主题来自: <a target="_black" href="https://github.com/huweihuang/hexo-theme-huweihuang/blob/master/_config.yml">这里</a>
+                    <a target="_black" href="https://www.huweihuang.com/">这里</a>
+                    <br>
+                    小美女华华专属
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://GTRgoSky.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://GTRgoSky.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

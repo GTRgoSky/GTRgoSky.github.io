@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在dev部署">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          第二篇，布置我的blog - Wings Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://GTRgoSky.github.io.git/2019/03/21/布置我的blog/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://user-images.githubusercontent.com/21190726/54736315-7855e580-4be5-11e9-8403-e5f1ac1a41a4.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#示例" title="示例">示例</a>
+                            
+                        </div>
+                        <h1>第二篇，布置我的blog</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Wings on
+                            2019-03-21
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wings Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="如何布置我的Blog："><a href="#如何布置我的Blog：" class="headerlink" title="如何布置我的Blog："></a>如何布置我的Blog：</h1><h2 id="准确的找到开发位置"><a href="#准确的找到开发位置" class="headerlink" title="准确的找到开发位置"></a>准确的找到开发位置</h2><p>release分支的  blog/source/_post路径</p>
+<h2 id="我需要布置一个头部banner"><a href="#我需要布置一个头部banner" class="headerlink" title="我需要布置一个头部banner"></a>我需要布置一个头部banner</h2><p>在themes\huweihuang_config.yml的文件中，有一个 【header-img】 选项。给予图片线上地址，即可完成banner替换。<br>可以看到在在themes\huweihuang\layout_partial\header.ejs文件中有下列代码</p>
+<blockquote>
+<p>图1：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">.header.intro-header&#123;</span><br><span class="line">    <span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span> (<span class="attr">is_home</span>()) &#123; %&gt;</span></span><br><span class="line">        background-image: url('<span class="tag">&lt;<span class="name">%=</span> <span class="attr">config</span>["<span class="attr">header-img</span>"] %&gt;</span>') </span><br><span class="line">        /*config*/</span><br><span class="line">    <span class="tag">&lt;<span class="name">%&#125;</span> <span class="attr">else</span> <span class="attr">if</span> (<span class="attr">is_post</span>())&#123;%&gt;</span></span><br><span class="line">        background-image: url('<span class="tag">&lt;<span class="name">%=</span> <span class="attr">page</span>["<span class="attr">header-img</span>"] || <span class="attr">config</span>["<span class="attr">header-img</span>"]  %&gt;</span>')</span><br><span class="line">        /*post*/</span><br><span class="line">    <span class="tag">&lt;<span class="name">%&#125;</span> <span class="attr">else</span> &#123;%&gt;</span></span><br><span class="line">        background-image: url('<span class="tag">&lt;<span class="name">%=</span> <span class="attr">page</span>["<span class="attr">header-img</span>"] || <span class="attr">config</span>["<span class="attr">header-img</span>"] %&gt;</span>')</span><br><span class="line">        /*page*/</span><br><span class="line">    <span class="tag">&lt;<span class="name">%&#125;</span> %&gt;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>找到对应的is_home判断，即banner图片控制代码段</p>
+<h2 id="如何置顶"><a href="#如何置顶" class="headerlink" title="如何置顶"></a>如何置顶</h2><p><a href="https://blog.csdn.net/nineya_com/article/details/103394315" target="_blank" rel="noopener">https://blog.csdn.net/nineya_com/article/details/103394315</a><br>给标签增加top值,越大越考前</p>
+<h2 id="我需要布置我点进文章后的banner"><a href="#我需要布置我点进文章后的banner" class="headerlink" title="我需要布置我点进文章后的banner"></a>我需要布置我点进文章后的banner</h2><p>如图1，我们需要找到设置 【page[“header-img”]】的地方。其实page里面的配置就是我们这个MD文件里最上面的那些配置。<br>也可以自己通过设置_config.yml里面的 【header-img-article】来设置公共的文章内部header</p>
+<h2 id="布置完成这两个，我如果需要写文章在哪里？"><a href="#布置完成这两个，我如果需要写文章在哪里？" class="headerlink" title="布置完成这两个，我如果需要写文章在哪里？"></a>布置完成这两个，我如果需要写文章在哪里？</h2><p>找到blog/source/_posts文件夹。里面就是我需要写的文章了。</p>
+<h2 id="关于头部的4个TAB。"><a href="#关于头部的4个TAB。" class="headerlink" title="关于头部的4个TAB。"></a>关于头部的4个TAB。</h2><p>home就是主页。<br>About则应该是关于，在 blog\source\about下设置。<br>对应的tags archive在对应文件夹下设置即可。如果遇到了新问题我在更新本文</p>
+<h1 id="关于发布"><a href="#关于发布" class="headerlink" title="关于发布"></a>关于发布</h1><h2 id="本地打包流程："><a href="#本地打包流程：" class="headerlink" title="本地打包流程："></a>本地打包流程：</h2><p>直接npm run build 一键打包发布。就是这么舒服</p>
+<h2 id="图片放在哪里了："><a href="#图片放在哪里了：" class="headerlink" title="图片放在哪里了："></a>图片放在哪里了：</h2><p>在github的issue里面</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/04/25/每周一段JavaScript权威指南/week1/" data-toggle="tooltip" data-placement="top" title="每周一段JavaScript权威指南-第一周">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/09/10/Hello-Yxx-s-Blog/" data-toggle="tooltip" data-placement="top" title="使用主题的示例">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents    toc是根据#作为锚链接的 -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#如何布置我的Blog："><span class="toc-nav-number">1.</span> <span class="toc-nav-text">如何布置我的Blog：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#准确的找到开发位置"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">准确的找到开发位置</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#我需要布置一个头部banner"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">我需要布置一个头部banner</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何置顶"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">如何置顶</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#我需要布置我点进文章后的banner"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">我需要布置我点进文章后的banner</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#布置完成这两个，我如果需要写文章在哪里？"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">布置完成这两个，我如果需要写文章在哪里？</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#关于头部的4个TAB。"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">关于头部的4个TAB。</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#关于发布"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">关于发布</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#本地打包流程："><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">本地打包流程：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#图片放在哪里了："><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">图片放在哪里了：</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#示例" title="示例">示例</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://github.com/GTRgoSky/TestLOL" target="_blank">GitHub-Demo</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                <p class="copyright text-muted">
+                    Copyright &copy; Wings 2022 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    主题来自: <a target="_black" href="https://github.com/huweihuang/hexo-theme-huweihuang/blob/master/_config.yml">这里</a>
+                    <a target="_black" href="https://www.huweihuang.com/">这里</a>
+                    <br>
+                    小美女华华专属
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://GTRgoSky.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://GTRgoSky.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

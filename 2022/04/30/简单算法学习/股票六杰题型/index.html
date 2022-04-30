@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在dev部署">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          简单算法学习--股票六杰题型 - Wings Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://GTRgoSky.github.io.git/2022/04/30/简单算法学习/股票六杰题型/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img-blog.csdnimg.cn/2020050614115438.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#algorithm" title="algorithm">algorithm</a>
+                            
+                        </div>
+                        <h1>简单算法学习--股票六杰题型</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Wings on
+                            2022-04-30
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wings Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="题目地址："><a href="#题目地址：" class="headerlink" title="题目地址："></a>题目地址：</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过代码来详细解释</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这类题型 主要思路是 dp[i 天数][k 交易次数][0 | 1 是否持有]</span></span><br><span class="line"><span class="comment">// 我们最终要求的可获得的最大收益就是 dp[n - 1][k][0]，代表最后一天将股票卖出后的最大收益</span></span><br><span class="line"><span class="comment">// 所以一切的情况都归类如下：</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 今天手中没有持有股票，有两种可能：</span></span><br><span class="line"><span class="comment">// 1. 昨天没有持有，今天选择不操作。 对应: dp[i - 1][k][0]</span></span><br><span class="line"><span class="comment">// 2. 昨天持有，今天卖出了，所以今天没有股票了。对应: dp[i - 1][k][1] + prices[i]</span></span><br><span class="line"><span class="comment">// dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 今天手中持有股票，有两种可能：</span></span><br><span class="line"><span class="comment">// 1. 昨天手中持有股票，今天选择不操作。对应: dp[i - 1][k][1]</span></span><br><span class="line"><span class="comment">// 2. 昨天没有持有股票，今天买入了。对应: dp[i - 1][k - 1][0] - prices[i]</span></span><br><span class="line"><span class="comment">// dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 1][k - 1][0] - prices[i])</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//很显然，卖出股票利润增加，买入股票利润减少。因为每次交易包含两次成对的操作，买入和卖出。</span></span><br><span class="line"><span class="comment">// 所以只有买入的时候需要将 k - 1，那么最大利润就是上面这两种可能性中的最大值。</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock/solution/qian-duan-shi-tang-ti-jie-chao-hao-li-ji-gpb4/" target="_blank" rel="noopener">1、买卖股票的最佳时机</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> maxProfit = <span class="function"><span class="keyword">function</span>(<span class="params">prices</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> n = prices.length; <span class="comment">// 获取交易长度</span></span><br><span class="line">    <span class="keyword">let</span> price_in = -prices[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">let</span> price_out = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="comment">// 这一步是因为我们的天数是固定的（只能 i - 1 到 i）我们的交易次数是固定的（只有1次 k = 1） 所以我们可以省略</span></span><br><span class="line">        price_out = <span class="built_in">Math</span>.max(price_out, price_in + prices[i])</span><br><span class="line">        <span class="comment">// 因为我们交易后就不能再次交易，所以买入的那次一定是从无到有  dp[i - 1][1 - 1][0] = dp[i - 1][0][0]一定为0</span></span><br><span class="line">        price_in = <span class="built_in">Math</span>.max(price_in, -prices[i])</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> price_out;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 这道题可以配合第5题看，学会冷冻期</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-ii/solution/qian-duan-shi-tang-ti-jie-chao-hao-li-ji-s2hw/" target="_blank" rel="noopener">2、买卖股票的最佳时机II</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 继续公式</span></span><br><span class="line"><span class="keyword">const</span> maxProfit = <span class="function"><span class="keyword">function</span>(<span class="params">prices</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 因为可以交易无数次所以k降纬</span></span><br><span class="line">    <span class="keyword">const</span> n = prices.length;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> price_in = -prices[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">let</span> price_out = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        price_out = <span class="built_in">Math</span>.max(price_out, price_in + prices[i])</span><br><span class="line">        price_in = <span class="built_in">Math</span>.max(price_in, price_out - prices[i])</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> price_out;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iii/solution/qian-duan-shi-tang-ti-jie-chao-hao-li-ji-ku4r/" target="_blank" rel="noopener">3、买卖股票的最佳时机III</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> maxProfit = <span class="function"><span class="keyword">function</span>(<span class="params">prices</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> n = prices.length</span><br><span class="line">    <span class="keyword">let</span> dp_i10 = <span class="number">0</span></span><br><span class="line">    <span class="keyword">let</span> dp_i11 = -prices[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">let</span> dp_i20 = <span class="number">0</span></span><br><span class="line">    <span class="keyword">let</span> dp_i21 = -prices[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        dp_i20 = <span class="built_in">Math</span>.max(dp_i20, dp_i21 + prices[i])</span><br><span class="line">        <span class="comment">// 这里可以让我们理解到，dp_i21的最大值是第二次操作没卖还是第一次操作刚卖出，和i20无关</span></span><br><span class="line">        dp_i21 = <span class="built_in">Math</span>.max(dp_i21, dp_i10 - prices[i])</span><br><span class="line">        dp_i10 = <span class="built_in">Math</span>.max(dp_i10, dp_i11 + prices[i])</span><br><span class="line">        dp_i11 = <span class="built_in">Math</span>.max(dp_i11, -prices[i])</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp_i20</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-iv/solution/qian-duan-shi-tang-ti-jie-chao-hao-li-ji-wugy/" target="_blank" rel="noopener">4、买卖股票的最佳时机IV</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> maxProfit = <span class="function"><span class="keyword">function</span>(<span class="params">k, prices</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> n = prices.length</span><br><span class="line">    <span class="keyword">const</span> maxProfit2 = <span class="function"><span class="keyword">function</span>(<span class="params">prices</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">let</span> profit_out = <span class="number">0</span></span><br><span class="line">        <span class="keyword">let</span> profit_in = -prices[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">            profit_out = <span class="built_in">Math</span>.max(profit_out, profit_in + prices[i])</span><br><span class="line">            profit_in = <span class="built_in">Math</span>.max(profit_in, profit_out - prices[i])</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> profit_out</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果长度是操作的2倍，则相当于可以操作无限次（用不完操作天数）</span></span><br><span class="line">    <span class="keyword">if</span> (k &gt; n / <span class="number">2</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> maxProfit2(prices)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> profit = <span class="keyword">new</span> <span class="built_in">Array</span>(k)</span><br><span class="line">    <span class="comment">// 初始化买入卖出时的利润，将每次交易买入、卖出时的利润放在一个对象中，实现降维</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">0</span>; j &lt;= k; j++) &#123;</span><br><span class="line">        profit[j] = &#123;</span><br><span class="line">            profit_in: -prices[<span class="number">0</span>],</span><br><span class="line">            profit_out: <span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">let</span> j = <span class="number">1</span>; j &lt;= k; j++) &#123;</span><br><span class="line">            <span class="comment">// 天数降纬，只统计第j次操作的大小</span></span><br><span class="line">            profit[j] = &#123;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// 卖出的最大利润是一只空仓；之前买了的最大利润今天卖获取更大利润</span></span><br><span class="line">                profit_out: <span class="built_in">Math</span>.max(profit[j].profit_out, profit[j].profit_in + prices[i]), </span><br><span class="line">                <span class="comment">// 买入最大利润为昨天没有今天买，和昨天有</span></span><br><span class="line">                profit_in: <span class="built_in">Math</span>.max(profit[j].profit_in, profit[j<span class="number">-1</span>].profit_out - prices[i])</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> profit[k].profit_out</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/solution/qian-duan-shi-tang-ti-jie-chao-hao-li-ji-o5yd/" target="_blank" rel="noopener">5、最佳买卖股票时机含冷冻期</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> maxProfit = <span class="function"><span class="keyword">function</span>(<span class="params">prices</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 这道题的难点就是冷冻期</span></span><br><span class="line"><span class="comment">     * 我们根据之前公式来推：</span></span><br><span class="line"><span class="comment">     * 卖出不变： dp[i][k][0] = Math.max(dp[i - 1][k][0], dp[i - 1][k][1] + prices[i])</span></span><br><span class="line"><span class="comment">     * 买入必须在卖出后一天所以是 【i-2】： dp[i][k][1] = Math.max(dp[i - 1][k][1], dp[i - 2][k - 1][0] - prices[i])</span></span><br><span class="line"><span class="comment">     * 因为不限制买入次数所以k降纬</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">const</span> n = prices.length;</span><br><span class="line">    <span class="keyword">let</span> price_in = -prices[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">let</span> price_out = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> price_tmp = <span class="number">0</span>; <span class="comment">// 存储前天</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i&lt; n; i++) &#123;</span><br><span class="line">        <span class="keyword">const</span> tmp = price_out; <span class="comment">// 存下昨天;</span></span><br><span class="line">        price_out = <span class="built_in">Math</span>.max(price_out, price_in + prices[i]);</span><br><span class="line">        </span><br><span class="line">        price_in = <span class="built_in">Math</span>.max(price_in, price_tmp - prices[i]);</span><br><span class="line">        price_tmp = tmp; <span class="comment">// 进入下次循环后 price_tmp 保存的其实是昨天的昨天，也就是前天</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://leetcode-cn.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/solution/qian-duan-shi-tang-ti-jie-chao-hao-li-ji-hsc7/" target="_blank" rel="noopener">6、买卖股票的最佳时机含手续费</a></p>
+<h2 id="其他："><a href="#其他：" class="headerlink" title="其他："></a>其他：</h2><p><a href="https://github.com/Geekhyt/javascript-leetcode/issues/45" target="_blank" rel="noopener">感谢前端食堂的分享</a></p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2021/12/26/简单算法学习/quickSort/" data-toggle="tooltip" data-placement="top" title="简单算法学习--快速排序">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents    toc是根据#作为锚链接的 -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#题目地址："><span class="toc-nav-number">1.</span> <span class="toc-nav-text">题目地址：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#其他："><span class="toc-nav-number">2.</span> <span class="toc-nav-text">其他：</span></a></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#algorithm" title="algorithm">algorithm</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://github.com/GTRgoSky/TestLOL" target="_blank">GitHub-Demo</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                <p class="copyright text-muted">
+                    Copyright &copy; Wings 2022 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    主题来自: <a target="_black" href="https://github.com/huweihuang/hexo-theme-huweihuang/blob/master/_config.yml">这里</a>
+                    <a target="_black" href="https://www.huweihuang.com/">这里</a>
+                    <br>
+                    小美女华华专属
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://GTRgoSky.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://GTRgoSky.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

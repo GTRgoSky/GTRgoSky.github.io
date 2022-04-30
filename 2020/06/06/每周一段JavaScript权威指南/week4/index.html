@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在dev部署">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          每周一段JavaScript权威指南-第四周 - Wings Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://GTRgoSky.github.io.git/2020/06/06/每周一段JavaScript权威指南/week4/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img-blog.csdnimg.cn/2020050614115438.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#JavaScript权威指南" title="JavaScript权威指南">JavaScript权威指南</a>
+                            
+                        </div>
+                        <h1>每周一段JavaScript权威指南-第四周</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Wings on
+                            2020-06-06
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wings Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="第四周"><a href="#第四周" class="headerlink" title="第四周"></a>第四周</h1><p>（第九章）</p>
+<blockquote>
+<p>finish 本章内容较多，且相对重要</p>
+</blockquote>
+<hr>
+<h2 id="1：第九章（类和模块）"><a href="#1：第九章（类和模块）" class="headerlink" title="1：第九章（类和模块）"></a>1：第九章（类和模块）</h2><blockquote>
+<p>每个对象都是一个属性集合，相互之间没有联系，在JS中可以定义对象的类，让每个对象共享某一类的属性。 类的实现是基于原型机制实现的。</p>
+</blockquote>
+<h3 id="1、类和原型"><a href="#1、类和原型" class="headerlink" title="1、类和原型"></a>1、类和原型</h3><p>   类的所有实例对象都是从一同一个原型对象上继承属性。因此，原型对象是类的核心。</p>
+<p>   实现一个基础的继承概念代码：<br>   <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inhert</span>(<span class="params">p: Object | null</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(Objcet.create) <span class="keyword">return</span> Objcet.create(p);</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;;</span><br><span class="line">    F.prototype = p;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> prototypeObj = &#123;</span><br><span class="line">    a: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> <span class="literal">true</span>&#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> vm = inhert(prototypeObj); <span class="comment">// =&gt; vm.a() -&gt;true</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="2、类和构造函数："><a href="#2、类和构造函数：" class="headerlink" title="2、类和构造函数："></a>2、类和构造函数：</h3><pre><code>1、构造函数是用来初始化新创建的对象的。 使用new来调用。
+他会自己创造出一个新对象，构造函数this指向该对象，构造函数初始化this，最后把这个对象返回。
+构造函数的prototype被新创建的实例引用为原型。
+2、
+    1）原型对象是类的唯一标识。
+    可以用 vm instanceof Cls 来判断vm是否继承自Cls.prototype
+    2）constructor属性：
+    任何函数都可以用做构造函数。并且，调用构造函数是需要用到一个prototype属性。因此，每个函数都拥有一个prototype属性（bind绑定生成的函数除外）。
+    这个属性值是一个对象，包含一个不可枚举的属性constructor（它的值是一个函数对象指向构造函数自己）这个构造函数为vm的类。
+    3）构造函数、原型、实例关系：
+    function Cls() {};
+    构造函数：Cls === Cls.prototype.constructor
+    原型(其实相当于新生成了一个原型对象，指向了这里)：
+    Cls.prototype === vm.__proto__
+    实例：vm === new Cls() // 这里抽象概念，实例化的一个方法。
+</code></pre><h3 id="3、类的继承："><a href="#3、类的继承：" class="headerlink" title="3、类的继承："></a>3、类的继承：</h3><blockquote>
+<p>定义类的步骤：<br>    1、先定义一个构造函数，并设置初始化的新对象的属性 <br><br>    2、给构造函数的prototype设置实例的公共方法 <br><br>    3、给构造函数定义类字段和类属性。</p>
+</blockquote>
+<pre><code>直接上继承例子：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ClsChild</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ClsParent</span>(<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.x = x;</span><br><span class="line">    <span class="keyword">this</span>.y = y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 声明一个原型对象。</span></span><br><span class="line"><span class="keyword">var</span> prototypeObj = &#123;</span><br><span class="line">    con() &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.x, <span class="keyword">this</span>.y);</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 给父类绑定新的原型对象</span></span><br><span class="line">ClsParent.prototype = &#123;</span><br><span class="line">    <span class="keyword">constructor</span>: b,</span><br><span class="line">    ...obj,</span><br><span class="line">&#125;;</span><br><span class="line">// 寄生式继承</span><br><span class="line">/**</span><br><span class="line">*</span><br><span class="line">* @param &#123;Objcet&#125; Child <span class="comment">//子类</span></span><br><span class="line">* @param &#123;<span class="built_in">Object</span>&#125; Parent <span class="comment">//父类</span></span><br><span class="line">*<span class="regexp">/</span></span><br><span class="line"><span class="regexp">function extend(Child, Parent) &#123;</span></span><br><span class="line"><span class="regexp">    function content(obj) &#123;</span></span><br><span class="line"><span class="regexp">        /</span><span class="regexp">/ if(Object.create) return Object.create(obj);</span></span><br><span class="line"><span class="regexp">        /</span><span class="regexp">/ 声明一个构造函数</span></span><br><span class="line"><span class="regexp">        function F() &#123;&#125; </span></span><br><span class="line"><span class="regexp">        /</span><span class="regexp">/将构造函数的原型对象指向obj,且构造函数指向自己</span></span><br><span class="line"><span class="regexp">        F.prototype = obj; </span></span><br><span class="line"><span class="regexp">        F.prototype.constructor = F;</span></span><br><span class="line"><span class="regexp">        return new F(); /</span><span class="regexp">/ 返回F的实例用于作为子类的原型对象</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ 将父类的原型对象传入，得到指向父类原型对象的实例</span></span><br><span class="line"><span class="regexp">    let p = content(Parent.prototype);</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ 如果传入的是实例，则会多一层__prop__。因为实例的__prop__才是真正的指向原型对象 </span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ let p = content(new Parent()); </span></span><br><span class="line"><span class="regexp">    </span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ 将子类指向实例p</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ 引出 实例的__proto__指向原型对象</span></span><br><span class="line"><span class="regexp">    Child.prototype = p;</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ 构造函数的标识类指向自己</span></span><br><span class="line"><span class="regexp">    Child.prototype.constructor = Child;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    return Child;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 这里其实是一个函数式编程思维，将函数作为对象传入并操作函数。但是它改变了原函数，所以不严谨。</span></span><br><span class="line"><span class="regexp">extend(ClsChild, ClsParent);</span></span><br><span class="line"><span class="regexp">var c2 = new ClsChild(1, 2); /</span><span class="regexp">/ &#123;&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 如果想初始化子类的时候同时初始化父类。</span></span><br><span class="line"><span class="regexp">function superFun2() &#123;</span></span><br><span class="line"><span class="regexp">    /</span>** 第一位为一个子类构造函数的<span class="keyword">this</span>，后面拼接参数 *<span class="regexp">/</span></span><br><span class="line"><span class="regexp">    let arr = Array.from(arguments);</span></span><br><span class="line"><span class="regexp">    let selfObj = arr.shift();</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ 获取子类的原型对象</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ selfObj.__proto__ === ClsChild.prototype 在这里是一个实例对象</span></span><br><span class="line"><span class="regexp">    let vm = Object.getPrototypeOf(selfObj);</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ 获取父类的构造函数</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/ vm.__proto__.constructor === ClsParent</span></span><br><span class="line"><span class="regexp">    let fun = Object.getPrototypeOf(vm).constructor;</span></span><br><span class="line"><span class="regexp">    fun.apply(selfObj, arr);</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">function ClsChild2(x, y) &#123;</span></span><br><span class="line"><span class="regexp">    this.a = x + 1;</span></span><br><span class="line"><span class="regexp">    this.b = y + 1;</span></span><br><span class="line"><span class="regexp">    superFun2(this, x, y);</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">extend(ClsChild2, ClsParent);</span></span><br><span class="line"><span class="regexp">var c2 = new ClsChild2(1, 2); /</span><span class="regexp">/ &#123;a: 2, b: 3, x:1, y: 2&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="4、类的扩充："><a href="#4、类的扩充：" class="headerlink" title="4、类的扩充："></a>4、类的扩充：</h3><blockquote>
+<p>1、基于原型的继承机制是动态的：对象从原型继承属性， <br><br>如果创建对象后原型发生改变，则所有的实例都会受到影响 <br><br>这也是非基本类型在栈内存里存的是堆内存地址（指针）的原因。 <br><br>2、可以使用Object.defineproperty生成不可枚举不可修改的继承方法。</p>
+</blockquote>
+<h3 id="5、类和类型："><a href="#5、类和类型：" class="headerlink" title="5、类和类型："></a>5、类和类型：</h3><p>三种用以检测任意对象的类的技术：<br>1、instanceof运算符：<br>c instanceof p 判断c的原型链上是否有p.prototype。<br>它的机制：先获取p.prototype然后看是否在c的原型链上。所以，这里的继承不一定是直接继承，也可以是子后代。<br>isPortotypeOf:<br>Object.prototype.isPrototypeOf(vm);<br>在vm的原型链上搜索Object.prototype<br>2、constructor属性：<br>原型上.constructor === 原型的构造函数。<br>3、构造函数的名称：<br>暂无介绍。<br>4、拓展：<br>    鸭式辩型：对于检测对象的类，不是用相等的思维来解决。而是只关注对象能够做什么。</p>
+<h3 id="6、JS中面向对象技术-（重要）"><a href="#6、JS中面向对象技术-（重要）" class="headerlink" title="6、JS中面向对象技术 *（重要）"></a>6、JS中面向对象技术 *（重要）</h3><pre><code>1、类集合：
+集合（set）是一种数据结构，用于表示非重复值的无序集合。
+//eg: JS中的对象就是属性名和对应值的基本集合。
+// Set实现代码（添加，删除，查询）（P217页）：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Set</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">//一个构造函数 -- 让每一个不同的值都一个唯一字符串对应</span></span><br><span class="line">        <span class="comment">//集合数据保存在对象的属性里</span></span><br><span class="line">        <span class="keyword">this</span>.values = &#123;&#125;; </span><br><span class="line">        <span class="comment">// 集合中值的个数</span></span><br><span class="line">        <span class="keyword">this</span>.n = <span class="number">0</span>; </span><br><span class="line">        <span class="comment">//把所有参数添加到这个集合</span></span><br><span class="line">        <span class="keyword">this</span>.add.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>); </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//将每个参数都添加至集合中</span></span><br><span class="line">    <span class="built_in">Set</span>.prototype.add = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="built_in">arguments</span>.length; i++) &#123;</span><br><span class="line">            <span class="comment">//遍历每个参数</span></span><br><span class="line">            <span class="keyword">var</span> val = <span class="built_in">arguments</span>[i]; <span class="comment">//待添加到集合中的值</span></span><br><span class="line">            <span class="keyword">var</span> str = <span class="built_in">Set</span>._v2s(val); <span class="comment">//把它转换为唯一字符串</span></span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">this</span>.values.hasOwnProperty(str)) &#123;</span><br><span class="line">                <span class="comment">// 如果不在集合中</span></span><br><span class="line">                <span class="keyword">this</span>.values[str] = val; <span class="comment">//将字符串和值对应起来</span></span><br><span class="line">                <span class="keyword">this</span>.n++; <span class="comment">// 计数器加1</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从集合删除元素，这些元素由参数决定</span></span><br><span class="line">    <span class="built_in">Set</span>.prototype.remove = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="built_in">arguments</span>.length; i++) &#123;</span><br><span class="line">            <span class="comment">//遍历每个参数</span></span><br><span class="line">            <span class="keyword">var</span> str = <span class="built_in">Set</span>._v2s(<span class="built_in">arguments</span>[i]); <span class="comment">// 将字符串和值对应</span></span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.values.hasOwnProperty(str)) &#123;</span><br><span class="line">                <span class="comment">//如果在集合中</span></span><br><span class="line">                <span class="keyword">delete</span> <span class="keyword">this</span>.values[str]; <span class="comment">// 删除</span></span><br><span class="line">                <span class="keyword">this</span>.n--; <span class="comment">// 计数器减1</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果集合包含这个值。返回true 否则返回 false</span></span><br><span class="line">    <span class="built_in">Set</span>.prototype.contains = <span class="function"><span class="keyword">function</span> (<span class="params">value</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.values.hasOwnProperty(<span class="built_in">Set</span>._v2s(value));</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 返回集合大小</span></span><br><span class="line">    <span class="built_in">Set</span>.prototype.size = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.n;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 遍历集合中的所有元素，在指定的上下文中调用f</span></span><br><span class="line">    <span class="built_in">Set</span>.prototype.foreach = <span class="function"><span class="keyword">function</span> (<span class="params">f, context</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> s <span class="keyword">in</span> <span class="keyword">this</span>.values) &#123;</span><br><span class="line">            <span class="comment">// 遍历集合中的所有字符串</span></span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.values.hasOwnProperty(s)) &#123;</span><br><span class="line">                <span class="comment">// 忽略继承属性</span></span><br><span class="line">                f.call(context, <span class="keyword">this</span>.values[s]); <span class="comment">// 调用f，传入value，上下文指向context</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断that是否和调用他的对象相等</span></span><br><span class="line">    <span class="built_in">Set</span>.prototype.equals = <span class="function"><span class="keyword">function</span> (<span class="params">that</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> === that) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!(that <span class="keyword">instanceof</span> <span class="built_in">Set</span>)) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (that.size() != <span class="keyword">this</span>.size()) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">this</span>.foreach(<span class="function"><span class="keyword">function</span> (<span class="params">v</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (!that.contains(v)) <span class="keyword">throw</span> <span class="literal">false</span>;</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">            <span class="keyword">if</span> (e == <span class="literal">false</span>) <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 这是一个内部函数，用来将任意的Javascript值和唯一的字符串对应起来</span></span><br><span class="line">    <span class="built_in">Set</span>._v2s = <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (val) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="literal">undefined</span>: <span class="comment">//特殊的原始值，值只返回一个字母</span></span><br><span class="line">                <span class="keyword">return</span> <span class="string">'u'</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="literal">null</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">'n'</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="literal">true</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">'t'</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="literal">false</span>:</span><br><span class="line">                <span class="keyword">return</span> <span class="string">'f'</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">switch</span> (<span class="keyword">typeof</span> val) &#123;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">'number'</span>:</span><br><span class="line">                        <span class="keyword">return</span> <span class="string">'#'</span> + val;</span><br><span class="line">                    <span class="keyword">case</span> <span class="string">'string'</span>:</span><br><span class="line">                        <span class="keyword">return</span> <span class="string">'"'</span> + val;</span><br><span class="line">                    <span class="keyword">default</span>:</span><br><span class="line">                        <span class="keyword">return</span> <span class="string">'@'</span> + objectId(val);</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">        * 对任意对象来说，都会返回一个字符串</span></span><br><span class="line"><span class="comment">        * 针对不同的对象，这个函数会返回不同的字符串</span></span><br><span class="line"><span class="comment">        * 对于同一个对象的多次调用，总是返回相同的字符串</span></span><br><span class="line"><span class="comment">        * 为了做到这一点，它给o创建了一个属性。在ES5中，这个属性是不可枚举且是只读的</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">objectId</span>(<span class="params">o</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> prop = <span class="string">'|**objectid**|'</span>; <span class="comment">//私有属性用于存放id</span></span><br><span class="line">            <span class="keyword">if</span> (!o.hasOwnProperty(prop)) &#123;</span><br><span class="line">                <span class="comment">//如果对象没有id</span></span><br><span class="line">                o[prop] = <span class="built_in">Set</span>._v2s.next++; <span class="comment">//将下一个值赋予它</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> o[prop]; <span class="comment">//返回id</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">Set</span>._v2s.next = <span class="number">100</span>; <span class="comment">//设置初始的id值</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> b = <span class="function"><span class="keyword">function</span> (<span class="params">v</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(v);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Set</span>(</span><br><span class="line">        &#123;&#125;,</span><br><span class="line">        &#123;&#125;,</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;&#125;,</span><br><span class="line">        b,</span><br><span class="line">        b,</span><br><span class="line">        <span class="literal">null</span>,</span><br><span class="line">        <span class="literal">null</span>,</span><br><span class="line">        [<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * &#123;</span></span><br><span class="line"><span class="comment">    *  n: 6,</span></span><br><span class="line"><span class="comment">    *  valuse: &#123;</span></span><br><span class="line"><span class="comment">    *      @100:&#123;&#125;,</span></span><br><span class="line"><span class="comment">    *      @101: &#123;&#125;,</span></span><br><span class="line"><span class="comment">    *      @102: function a()&#123;&#125;,</span></span><br><span class="line"><span class="comment">    *      @103: function a()&#123;&#125;,</span></span><br><span class="line"><span class="comment">    *      @104: function() &#123;&#125;,</span></span><br><span class="line"><span class="comment">    *      'n': null,</span></span><br><span class="line"><span class="comment">    *      @105: [1,2,2,3]</span></span><br><span class="line"><span class="comment">    *  &#125;</span></span><br><span class="line"><span class="comment">    * &#125;</span></span><br><span class="line"><span class="comment">    *</span></span><br><span class="line"><span class="comment">    * b['|**objectid**|'] = 104</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="built_in">console</span>.log(a);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> c = &#123;</span><br><span class="line">        a: <span class="number">1</span>,</span><br><span class="line">        b: <span class="number">2</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">    a.foreach(<span class="function"><span class="keyword">function</span> (<span class="params">v</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> v == <span class="string">'function'</span> &amp;&amp; v.name == <span class="string">'b'</span>) &#123;</span><br><span class="line">            v(<span class="keyword">this</span>.a);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, c);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">` </span></span><br><span class="line"><span class="string">    2、枚举类型：它是值的有限集合。如果值定义为这个类型，则代表他是可以列出的。</span></span><br><span class="line"><span class="string">    // 直接上代码例子(P219页）：</span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>javascript</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">enumeration</span>(<span class="params">nTV</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 返回一个构造函数。并且它的name属性指向他的实例</span></span><br><span class="line">        <span class="keyword">var</span> enu = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> proto = (enu.prototype = &#123;</span><br><span class="line">            <span class="keyword">constructor</span>: enu,</span><br><span class="line">            toString: function () &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">            &#125;,</span><br><span class="line">            valueOf: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">this</span>.value;</span><br><span class="line">            &#125;,</span><br><span class="line">            toJSON: <span class="function"><span class="keyword">function</span> (<span class="params">k</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">            &#125;,</span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        enu.values = [];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (name <span class="keyword">in</span> nTV) &#123;</span><br><span class="line">            <span class="keyword">var</span> e = <span class="built_in">Object</span>.create(proto);</span><br><span class="line">            e.name = name;</span><br><span class="line">            e.value = nTV[name];</span><br><span class="line">            enu[name] = e;</span><br><span class="line">            enu.values.push(e);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        enu.foreach = <span class="function"><span class="keyword">function</span> (<span class="params">f, c</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="keyword">this</span>.values.length; i++) &#123;</span><br><span class="line">                f.call(c, <span class="keyword">this</span>.values[i]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> enu;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Card</span>(<span class="params">suit, rank</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.suit = suit;</span><br><span class="line">        <span class="keyword">this</span>.rank = rank;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Card.Suit = enumeration(&#123; <span class="attr">Culbs</span>: <span class="number">2</span>, <span class="attr">Diamonds</span>: <span class="number">1</span>, <span class="attr">Hearts</span>: <span class="number">3</span>, <span class="attr">Spades</span>: <span class="number">4</span> &#125;); <span class="comment">// 梅花，方块，红心，黑桃牌</span></span><br><span class="line">    Card.Rank = enumeration(&#123;</span><br><span class="line">        Two: <span class="number">2</span>,</span><br><span class="line">        Three: <span class="number">3</span>,</span><br><span class="line">        Four: <span class="number">4</span>,</span><br><span class="line">        Five: <span class="number">5</span>,</span><br><span class="line">        Six: <span class="number">6</span>,</span><br><span class="line">        Seven: <span class="number">7</span>,</span><br><span class="line">        Eight: <span class="number">8</span>,</span><br><span class="line">        Nine: <span class="number">9</span>,</span><br><span class="line">        Ten: <span class="number">10</span>,</span><br><span class="line">        Jack: <span class="number">11</span>,</span><br><span class="line">        Queen: <span class="number">12</span>,</span><br><span class="line">        King: <span class="number">13</span>,</span><br><span class="line">        Ace: <span class="number">15</span>,</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    Card.prototype.toString = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.rank.toString() + <span class="string">'of'</span> + <span class="keyword">this</span>.suit.toString();</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    Card.prototype.compareTo = <span class="function"><span class="keyword">function</span> (<span class="params">that</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.rank &lt; that.rank) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.rank &gt; that.rank) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    Card.orderByRank = <span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a.compareTo(b);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    Card.orderBySuit = <span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// a = &#123;name: xxx, value: xxx&#125;,在比较时会调取valueOf的值</span></span><br><span class="line">        <span class="keyword">var</span> c = <span class="built_in">JSON</span>.stringify(a);</span><br><span class="line">        <span class="built_in">console</span>.log(c);</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">JSON</span>.parse(c));</span><br><span class="line">        <span class="keyword">if</span> (a.suit &lt; b.suit) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span> (a.suit &gt; b.suit) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (a.rank &lt; b.rank) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        <span class="keyword">if</span> (a.rank &gt; b.rank) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">Deck</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> cards = (<span class="keyword">this</span>.cards = []);</span><br><span class="line">        Card.Suit.foreach(<span class="function"><span class="keyword">function</span> (<span class="params">s</span>) </span>&#123;</span><br><span class="line">            Card.Rank.foreach(<span class="function"><span class="keyword">function</span> (<span class="params">r</span>) </span>&#123;</span><br><span class="line">                cards.push(<span class="keyword">new</span> Card(s, r));</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Deck.prototype.shuffle = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> deck = <span class="keyword">this</span>.cards,</span><br><span class="line">            len = deck.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = len - <span class="number">1</span>; i &gt; <span class="number">0</span>; i--) &#123;</span><br><span class="line">            <span class="keyword">var</span> r = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (i + <span class="number">1</span>)),</span><br><span class="line">                temp;</span><br><span class="line">            (temp = deck[i]), (deck[i] = deck[r]), (deck[r] = temp);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    Deck.prototype.deal = <span class="function"><span class="keyword">function</span> (<span class="params">n</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.cards.length &lt; n) <span class="keyword">throw</span> <span class="string">'out'</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.cards.splice(<span class="keyword">this</span>.cards.length - n, n);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> deck = <span class="keyword">new</span> Deck().shuffle();</span><br><span class="line">    <span class="keyword">var</span> hand = deck.deal(<span class="number">13</span>).sort(Card.orderBySuit);</span><br><span class="line">    <span class="built_in">console</span>.log(hand);</span><br></pre></td></tr></table></figure>
+<pre><code>3、标准转换方法：
+    1）toString():在希望使用字符串的时候会使用它。
+    2）valueOf（）：当数字运算符（除了+）和关系运算符作用于数字文本标识的对象时，会自动调用。
+    3）toJson（）：在调用JSON.stringify时；会调用这个方法。key作为参数传入。并接受其返回值作为序列化对象的value。举例：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;<span class="attr">aa</span>: <span class="number">1</span>&#125;;</span><br><span class="line">a.toJSON = <span class="function"><span class="keyword">function</span>(<span class="params">T</span>) </span>&#123;<span class="keyword">return</span> <span class="number">6</span>&#125;;</span><br><span class="line"><span class="built_in">JSON</span>.stringify(a);</span><br><span class="line"><span class="comment">// 此时会调用toJSON -》 参数T为：aa。</span></span><br><span class="line"><span class="comment">// 最终得到的值为 "&#123;'aa': 6&#125;";</span></span><br><span class="line"><span class="comment">// 当有多个对象时，循环调用toJSON</span></span><br></pre></td></tr></table></figure>
+<pre><code>4、比较方法：对象比较时，比较的是引用而不是值。
+如果将对象用于关系运算符进行比较，则会先调用对象的ValueOf；如果其返回的是一个原始值，则直接比较原始值。
+5、方法借用：
+举例：
+Array.prototype.funName.call(类数组)
+6、私有状态：
+我们可以通过将变量（或参数）闭包在一个构造函数内来模拟实现私有实例字段，调用构造函数会创建一个实例。为了做到这一点，需要在函数内部定义一个函数（闭包，这个函数可以访问外部函数的作用域对象）并将这个函数赋值给新创建的对象的属性。（注意：使用闭包函数会影响一定性能，且持续占有内存）。
+7、构造函数的重载与工厂方法：
+重载：通过传入不同的参数，执行不同的初始化方法。（类似方法重写）
+工厂方法：給一个定义一个方法，该方法返回自身的实例。（根据传入的参数不同，实例也会不同）
+</code></pre><h3 id="7、子类："><a href="#7、子类：" class="headerlink" title="7、子类："></a>7、子类：</h3><blockquote>
+<p>面向对象编程中：类B可以继承自类A。我们称A为父类，B为子类。<br><br>B的实例从A继承了所有实例方法。类B可以定义自己的实例方法，有些方法可以重载A的方法。<br><br>并且B的重载方法调用了A的重载方法。这种做法称为方法链。<br><br>同理，B的构造函数可能需要调用A的构造函数，这种做法称为“构造函数链”。<br><br>当子类层次太深时，需要定义抽象类。抽象类中没有定义方法实现，抽象方法是在抽象类的具体子类中实现的。</p>
+</blockquote>
+<p>1、定义子类：<br>在ES6中可以直接用extends实现。<br>在Es5中可以将子类的constructor和prototype指向（继承）父类。并且遍历父类的类属性和类方法并拷贝。</p>
+<p>2、构造函数和方法链：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//举例：</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Set</span>(<span class="params"></span>) </span>&#123;...&#125;;</span><br><span class="line"><span class="comment">// NoNullSet是Set的子类，NoNullSet extends Set.</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">NoNullSet</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 作为普通函数调用父类的构造函数来初始化通过该构造函数调用创建对象。</span></span><br><span class="line">    <span class="comment">// 构造函数链。</span></span><br><span class="line">    <span class="built_in">Set</span>.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 重载</span></span><br><span class="line">NoNullSet.prototype.add = <span class="function"><span class="keyword">function</span> <span class="title">newFun</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 方法链</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Set</span>.prototype.add.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>3、组合VS子类：</p>
+<p>组合：将父类的原型对象绑定在自己的实例上。并用于操作父类原型。生成的多个子类其实共用的是一个类。而不在是非别的类。</p>
+<p>4、类的层次结构和抽象类：</p>
+<pre><code>1）抽象类：
+定义一个类，该类定义了该类型所需要的方法集合（只有名称），但并不具备具体的方法实现。子类继承抽象类，并重载自己对应的方法实现（不需要的不重载）。
+含有抽象方法，无法被实例化（因为该方法并非完整函数无法被使用）。
+2）抽象方法：在子类中才被实现，父类中只存在声明而为实现。
+3）【免责，自己理解非书中定义】：JS中无真正的抽象类，只是讲一些共有的方法抽离，并用函数先声明但不实现，并在子类中具体实现所需要的公共方法。
+</code></pre><h3 id="8、ECMAScript5中的类："><a href="#8、ECMAScript5中的类：" class="headerlink" title="8、ECMAScript5中的类："></a>8、ECMAScript5中的类：</h3><p>1、让属性不可枚举：<br>Object.defineproperty(Obj, key, {enumerable: false})</p>
+<p>2、定义不可变的类：<br>Object.defineproperty(Obj, key, {configurable: false})</p>
+<p>Tip：Object.getOwnPropertyDescriptor(Obj, key)// 获取对应key的描述</p>
+<h3 id="模块："><a href="#模块：" class="headerlink" title="模块："></a>模块：</h3><p>让代码可以在很多不同场景中重用。</p>
+<p>模块文件可以包含一个类定义，一组相关类，一个实用函数库或者一些可执行、待执行代码。</p>
+<p>目标是支持大规模的程序开发，处理分散源中的代码的组装，并且能让代码正确运行。不同模块应该避免修改全局执行的上下文。不应当定义超过一个的全局标识。</p>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><pre><code>1、类的实现是基于原型继承机制的。如果两个实例都从同一个原型对象上继承属性，我们说他们是同一个类的实例。
+2、
+    1）实用new调用构造函数会自动创建一个新对象，构造函数本身只需要初始化这个新的对象状态。
+    2）特征：构造函数的prototype属性被用作新对象的原型：vm.__proto === Cls.prototype;
+    3)在调用构造函数之前就已经创建了新对象（作用域对象），并通过构造函数中的this可以获取。构造函数只负责初始化this。
+    4）原型对象时构造函数的唯一标识。
+    5）除了bind方法外，任何函数都可以做构造函数（都具有prototype），这个属性值是一个对象，对象包含唯一一个不可枚举的属性constructor。它的属性值是一个函数对象，指代着这个原型对象的构造函数。
+    6)
+    ![构造函数关系图](https://img-blog.csdnimg.cn/20200606172833622.png)
+3、原型上的方法被所有实例继承，修改原型的方法会使所有的实例被影响，每个实例都是一个独立的对象，给实例定义的属性，不黑呗所有实例共享。
+4、
+    1）instanceof，检测左侧的原型链上是否有右侧.prototype
+    2）proto.isPrototypeOf(vm)检测proto方法（对象）是否在vm的原型链上
+    3）用constructor检测， vm.constructor === 构造函数。
+    4）鸭式辩类：检查一个对象是否实现了所有给定的参数表达式方法；只关注对象可以做什么，而不关注对象的类是什么。
+    5）Objcet.getOwnPropertyNames()获取自身属性（包括不可枚举，不包括原型）。
+5、
+    1）集合类Set标识非重复值的无序集合。集合类必须给集合中的每一个对象或者函数定义一个唯一的属性标识。
+    2）枚举类型：值的有限集合，为这个类型的值是可枚举的。
+    3）在希望使用字符串的地方用到对象的话会自动调用toString。
+    4）当对象用在数学运算符和关系运算符时，会自动调用ValueOf。
+    5）toJson。当对象调用JSON.stringify时，会调用这个值，并使用它的返回值。
+    6）对象比较比的是引用，类实例的比较：简单的比较是用constructor来保证相同类型；复杂的比较可以采用鸭式辩型比较，比较两个实例的方法或者属性是否全部相等。
+    7）方法借用。
+    8）私有状态：通过将变量或者参数闭包在一个构造函数内部，来模拟实现私有字段，要在构造函数内定义一个内部函数，并将函数赋值给新创建的对象属性。
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Range</span>(<span class="params">from, to</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.from = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> <span class="keyword">from</span>&#125;;</span><br><span class="line">    <span class="keyword">this</span>.to = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;<span class="keyword">return</span> to&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>    9）构造函数重载，即通过一些条件，使用不同的方法；重写原方法；覆盖愿方法。
+6、
+    1）原型链：ChildVm中的方法重载了ParentVm中的方法，并且ChildVm的方法中还调用的ParentVm的方法。P233
+    2）构造函数链：子类构造函数有时需要调用父类构造函数。
+    3）抽象类：定义子类的共有方法，但是未有具体实现，具体实现在子类的构造函数原型上。（重载的方式）。P237
+    4）组合优于继承：在继承中，每个组合需要创建一个新类P234；而组合将父类的实例用初始化属性保存。并在子类实例中直接调用父类原型方法。（通过父类实例）。（注意context）
+    5）抽象方法：在子类中才被实现，父类只存在声明而为实现。
+    6）抽象类：含有抽象方法且无法被正常实例化（因为方法未定义）；
+    7）多态：一个父类面对不同子类，有多种实现方式（通过重载）。创建多种对象的特征。
+7、
+    1）若直接在原型上做defineProperty的get和set劫持，则在子类上使用属性时，若该属性是继承来的，则被劫持。否则不会被劫持。
+    2）在一个函数中可以用this instanceof Cls 来判断当前函数是否被作为用作构造函数，若是普通函数则this为undefined||global。P241
+    3）用Object.defineProperty设置属性时，若是为存在过的属性，则其配置属性均为false。
+    4）defineProperties（对象，{key2:{配置},key3:{配置...}}）；
+    5）Object.getOwnPropertyDescriptor(对象，key)获取对象该key的配置
+</code></pre>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/08/02/每周一段JavaScript权威指南/week5/" data-toggle="tooltip" data-placement="top" title="每周一段JavaScript权威指南-第五周">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/05/22/每周一段JavaScript权威指南/week3/" data-toggle="tooltip" data-placement="top" title="每周一段JavaScript权威指南-第三周">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents    toc是根据#作为锚链接的 -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第四周"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">第四周</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1：第九章（类和模块）"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1：第九章（类和模块）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、类和原型"><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">1、类和原型</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、类和构造函数："><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">2、类和构造函数：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、类的继承："><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text">3、类的继承：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4、类的扩充："><span class="toc-nav-number">1.1.4.</span> <span class="toc-nav-text">4、类的扩充：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5、类和类型："><span class="toc-nav-number">1.1.5.</span> <span class="toc-nav-text">5、类和类型：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6、JS中面向对象技术-（重要）"><span class="toc-nav-number">1.1.6.</span> <span class="toc-nav-text">6、JS中面向对象技术 *（重要）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7、子类："><span class="toc-nav-number">1.1.7.</span> <span class="toc-nav-text">7、子类：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8、ECMAScript5中的类："><span class="toc-nav-number">1.1.8.</span> <span class="toc-nav-text">8、ECMAScript5中的类：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#模块："><span class="toc-nav-number">1.1.9.</span> <span class="toc-nav-text">模块：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#总结："><span class="toc-nav-number">1.1.10.</span> <span class="toc-nav-text">总结：</span></a></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JavaScript权威指南" title="JavaScript权威指南">JavaScript权威指南</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://github.com/GTRgoSky/TestLOL" target="_blank">GitHub-Demo</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                <p class="copyright text-muted">
+                    Copyright &copy; Wings 2022 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    主题来自: <a target="_black" href="https://github.com/huweihuang/hexo-theme-huweihuang/blob/master/_config.yml">这里</a>
+                    <a target="_black" href="https://www.huweihuang.com/">这里</a>
+                    <br>
+                    小美女华华专属
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://GTRgoSky.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://GTRgoSky.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

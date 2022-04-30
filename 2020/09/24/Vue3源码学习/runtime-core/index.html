@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在dev部署">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          学习Vue3源码 - runtime-core 篇 - Wings Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://GTRgoSky.github.io.git/2020/09/24/Vue3源码学习/runtime-core/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img-blog.csdnimg.cn/2020050614115438.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Vue3" title="Vue3">Vue3</a>
+                            
+                        </div>
+                        <h1>学习Vue3源码 - runtime-core 篇</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Wings on
+                            2020-09-24
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wings Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="目录-runtime-core"><a href="#目录-runtime-core" class="headerlink" title="目录:runtime-core"></a>目录:runtime-core</h1><blockquote>
+<p>持续更新中</p>
+</blockquote>
+<h2 id="文件目录"><a href="#文件目录" class="headerlink" title="文件目录"></a>文件目录</h2><p><a href="https://juejin.im/post/6844903957421096967" target="_blank" rel="noopener">https://juejin.im/post/6844903957421096967</a></p>
+<h2 id="案例在TestLoL的Vite尝试"><a href="#案例在TestLoL的Vite尝试" class="headerlink" title="案例在TestLoL的Vite尝试"></a>案例在TestLoL的Vite尝试</h2><h2 id="创建APP-createApp"><a href="#创建APP-createApp" class="headerlink" title="创建APP (createApp)"></a>创建APP (createApp)</h2><pre><code>1. import App from &apos;./App.vue&apos;; - 生成一个App.vue 的 render 函数，并绑定在 export 导出的 render 对象上
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代码块 1</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">	&lt;h1&gt;<span class="number">666</span>&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">	&lt;h1&gt;&#123;&#123; msg &#125;&#125;&lt;/</span>h1&gt;</span><br><span class="line">	&lt;div&gt;</span><br><span class="line">		&lt;HelloWorld msg=<span class="string">"Hello Vue 3.0 + Vite"</span> /&gt;</span><br><span class="line">	&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">	&lt;h1&gt;777&lt;/</span>h1&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">import HelloWorld from './</span>components/HelloWorld.vue<span class="string">';</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">export default &#123;</span></span><br><span class="line"><span class="string">	name: '</span>App<span class="string">',</span></span><br><span class="line"><span class="string">	data() &#123;</span></span><br><span class="line"><span class="string">		return &#123;</span></span><br><span class="line"><span class="string">			msg: '</span>Hello World<span class="string">',</span></span><br><span class="line"><span class="string">		&#125;;</span></span><br><span class="line"><span class="string">	&#125;,</span></span><br><span class="line"><span class="string">	components: &#123;</span></span><br><span class="line"><span class="string">		HelloWorld,</span></span><br><span class="line"><span class="string">	&#125;,</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">import HelloWorld from '</span>/src/components/HelloWorld.vue<span class="string">';</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">const __script = &#123;</span></span><br><span class="line"><span class="string">    name: '</span>App<span class="string">',</span></span><br><span class="line"><span class="string">    data() &#123;</span></span><br><span class="line"><span class="string">        return &#123;</span></span><br><span class="line"><span class="string">            msg: '</span>Hello World<span class="string">',</span></span><br><span class="line"><span class="string">        &#125;;</span></span><br><span class="line"><span class="string">    &#125;,</span></span><br><span class="line"><span class="string">    components: &#123;</span></span><br><span class="line"><span class="string">        HelloWorld,</span></span><br><span class="line"><span class="string">    &#125;,</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">import &#123;render as __render&#125; from "/src/App.vue?type=template"</span></span><br><span class="line"><span class="string">__script.render = __render</span></span><br><span class="line"><span class="string">__script.__hmrId = "/src/App.vue"</span></span><br><span class="line"><span class="string">__script.__file = "/开发相关/codeProject/TestLOL/vite/src/App.vue"</span></span><br><span class="line"><span class="string">export default __script</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// 代码块 2</span></span><br><span class="line"><span class="string">// /src/App.vue?type=template </span></span><br><span class="line"><span class="string">import &#123;createVNode as _createVNode, toDisplayString as _toDisplayString, resolveComponent as _resolveComponent, Fragment as _Fragment, openBlock as _openBlock, createBlock as _createBlock&#125; from "/@modules/vue.js"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">const _hoisted_1 = /*#__PURE__*/ 可以看到这里生成了一个Vnode 并且 赋值给了最终 render 函数的子节点上，并打上了 1 的 flagTag，说明他是一个静态节点</span></span><br><span class="line"><span class="string">_createVNode("h1", null, "666", -1 /* HOISTED */</span></span><br><span class="line"><span class="string">)</span></span><br><span class="line"><span class="string">const _hoisted_2 = /*#__PURE__*/</span></span><br><span class="line"><span class="string">_createVNode("h1", null, "777", -1 /* HOISTED */</span></span><br><span class="line"><span class="string">)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">// 这个 render 挂在 在 __script的 __render 属性上</span></span><br><span class="line"><span class="string">export function render(_ctx, _cache, $props, $setup, $data, $options) &#123;</span></span><br><span class="line"><span class="string">    const _component_HelloWorld = _resolveComponent("HelloWorld")</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    return (_openBlock(),</span></span><br><span class="line"><span class="string">    _createBlock(_Fragment, null, [_hoisted_1, _createVNode("h1", null, _toDisplayString($data.msg), 1 /* TEXT */</span></span><br><span class="line"><span class="string">    ), _createVNode("div", null, [_createVNode(_component_HelloWorld, &#123;</span></span><br><span class="line"><span class="string">        msg: "Hello Vue 3.0 + Vite"</span></span><br><span class="line"><span class="string">    &#125;)]), _hoisted_2], 64 /* STABLE_FRAGMENT */</span></span><br><span class="line"><span class="string">    ))</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+<pre><code>2. createApp(__script) =&gt; ensureRenderer().createApp(...args)
+    packages\runtime-dom\src\index.ts -&gt; createApp 初始化，接受一个祖先 Render 函数对象
+    2.1 调用 ensureRenderer 方法，返回一个renderer函数
+    2.2 renderer 函数 =  packages\runtime-core\src\renderer.ts -&gt; createRenderer 接受一个 rendererOptions ，rendererOptions参数是为了解释runtime-core的编译器（packages/runtime-dom/src/nodeOps.ts）【对应行为】
+    2.3 createRenderer 返回 baseCreateRenderer 函数 接受参数为上一步的 rendererOptions，并在内部对上述定义行为映射 core 中的对应方法 【427】
+    2.4 并最终返回一个 createApp = createAppAPI(render, hydrate) 接受 baseCreateRenderer 生成的render = 返一个 可以返回 Vue 对象 的方法
+</code></pre><hr>
+<pre><code>3. createApp(__script).mount(&apos;#app&apos;); 
+在 packages/runtime-dom/src/index.ts 的 createApp  执行 const app = ensureRenderer().createApp(...args) 触发了上述方法 
+获取到 app 对象，并绑定一个mount方法，并在 调用 mount 时， 调用原来 createAppAPI（APP【packages/runtime-core/src/apiCreateApp.ts】） 上挂载的 mount 函数（重载该方法时会先保存这个函数）
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> createApp = <span class="function">(<span class="params">(...args</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> app = ensureRenderer().createApp(...args)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (__DEV__) &#123;</span><br><span class="line">    injectNativeTagCheck(app)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> &#123; mount &#125; = app <span class="comment">// 缓存 createAppAPI 方法的 mount</span></span><br><span class="line">  <span class="comment">// 赋值 mount 挂载方法</span></span><br><span class="line">  <span class="comment">// createApp(App).mount('#app')</span></span><br><span class="line">  app.mount = (containerOrSelector: Element | string): <span class="function"><span class="params">any</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> container = normalizeContainer(containerOrSelector)</span><br><span class="line">    <span class="keyword">if</span> (!container) <span class="keyword">return</span></span><br><span class="line">    <span class="keyword">const</span> component = app._component</span><br><span class="line">    <span class="keyword">if</span> (!isFunction(component) &amp;&amp; !component.render &amp;&amp; !component.template) &#123;</span><br><span class="line">      component.template = container.innerHTML</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// clear content before mounting</span></span><br><span class="line">    container.innerHTML = <span class="string">''</span></span><br><span class="line">    <span class="comment">// packages/runtime-core/src/apiCreateApp.ts mount【218】</span></span><br><span class="line">    <span class="keyword">const</span> proxy = mount(container)</span><br><span class="line">    container.removeAttribute(<span class="string">'v-cloak'</span>)</span><br><span class="line">    container.setAttribute(<span class="string">'data-v-app'</span>, <span class="string">''</span>)</span><br><span class="line">    <span class="keyword">return</span> proxy</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> app</span><br><span class="line">&#125;) <span class="keyword">as</span> CreateAppFunction&lt;Element&gt;</span><br></pre></td></tr></table></figure>
+<pre><code>    3.1 执行 packages/runtime-core/src/apiCreateApp.ts 的 mount 为 render 对象创一个 Vnode， 
+        vnode的 type 指向 render 对象 也就是 template文件返回的 __script 对象 （见步骤1代码块）
+        再执行 baseCreateRenderer 的 render 方法
+    3.2 调用 baseCreateRenderer 自身 patch 执行比对 - 若是组件见 4 
+4. patch：自身 = baseCreateRenderer
+    4.1 执行自身 processComponent 加工组件 根据当前状态选择组件生命周期 执行对应周期函数 
+        4.1.1 processComponent 有2种情况 一种初始化如 4.2 另一种 更新 执行 updateComponent -执行 4.5的 update 函数
+    4.2 - mountComponent 初始化组件 
+    4.3 - createComponentInstance 创建组件实利
+    4.4 - setupComponent （setUp）周期 - setupStatefulComponent
+    4.5 - setupRenderEffect (绑定组件实例 update方法 方法内容：)  - update 被 updateComponent 调用
+        4.5.1 - renderComponentRoot (__script.render 函数执行的位置) 
+        4.5.2 - 执行render 
+        4.5.3 - openBlock 
+        4.5.4 - createBlock 
+        4.5.5 - normalizeChildren （每次创建Vnode都会执行， 暂时理解为修整 子节点的flag 和 对不同子节点状态的处理）（最终都收集在VNode） 
+        4.5.6 - closeBlock
+        4.5.7 - normalizeVNode 根据 render 函数 返回的 Vnode 判断 类型， 做相应返回
+5.  返回一个 vnode.component.proxy 代理 - 返回 proxy
+</code></pre><p>监听 绑定 未读</p>
+<hr>
+<h2 id="如何将子元素插入到Dom中"><a href="#如何将子元素插入到Dom中" class="headerlink" title="如何将子元素插入到Dom中"></a>如何将子元素插入到Dom中</h2><pre><code>1. 先通过一个Demo看到插入顺序：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;h1&gt;<span class="number">666</span>&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">    &lt;h1&gt;&#123;&#123; msg &#125;&#125;&lt;/</span>h1&gt;</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &lt;HelloWorld msg=<span class="string">"Hello Vue 3.0 + Vite"</span> /&gt; =&gt; (内容)</span><br><span class="line">        &lt;h1&gt;&#123;&#123; msg &#125;&#125;&lt;<span class="regexp">/h1&gt; </span></span><br><span class="line"><span class="regexp">        &lt;button @click="count++"&gt;count is: &#123;&#123; count &#125;&#125;&lt;/</span>button&gt;</span><br><span class="line">        &lt;p&gt;Edit &lt;code&gt;components/HelloWorld.vue&lt;<span class="regexp">/code&gt; to test hot module replacement.&lt;/</span>p&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;h1&gt;777&lt;/</span>h1&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 他们的insert顺序是：</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ child -- parent</span></span><br><span class="line"><span class="regexp">&lt;h1&gt;666&lt;/</span>h1&gt; -- <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span> <span class="attr">data-v-app</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span> </span><br><span class="line">&lt;h1&gt;Hello World&lt;<span class="regexp">/h1&gt; -- &lt;div id="app" data-v-app&gt;&lt;/</span>div&gt; </span><br><span class="line">&lt;h1&gt;Hello Vue <span class="number">3.0</span> + Vite&lt;<span class="regexp">/h1&gt; -- &lt;div&gt;&lt;/</span>div&gt;</span><br><span class="line">&lt;button&gt;count is: <span class="number">0</span>&lt;<span class="regexp">/button&gt; -- &lt;div&gt;&lt;/</span>div&gt;</span><br><span class="line">Edit -- <span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line">&lt;code&gt;components/HelloWorld.vue&lt;<span class="regexp">/code&gt; -- &lt;p&gt;&lt;/</span>p&gt;</span><br><span class="line">to test hot <span class="built_in">module</span> replacement. -- <span class="xml"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line">&lt;p&gt;<span class="xml"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span> -- <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;div&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span> -- div id=<span class="string">"app"</span> data-v-app&gt;<span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span> </span><br><span class="line">&lt;h1&gt;<span class="number">777</span>&lt;<span class="regexp">/h1&gt; -- &lt;div id="app" data-v-app&gt;&lt;/</span>div&gt;</span><br></pre></td></tr></table></figure>
+<pre><code>2. 在请求到template（代码块2） 文件后，会先将静态节点 执行 _createVNode， 并保存他们的Vnode
+    最终生成一个 render 函数，保存在 __script的 __render 属性上，这个render 最终会生成真正的dom。
+    Vue 3 这边把最终的Dom都生成在了 Fragment dom下，所以现在不用 在 模板上 用dev 包裹 一层
+
+3 先从子到父 的把静态 vnode 执行完毕 生成静态 Vnode 对象（这个对象被保存在了每个组件最终生成的render函数中）。【依次 执行 _createVNode】
+    3.1 执行 Vnode p -&gt; 生成 Vnode文本节点 Edit -&gt; 生成 Vnode element元素 code -&gt; Vnode文本节点 -&gt; 重写 Vnode p的type(因为它含有多个子 vnode) 和 children 返回 Vnode p；
+    3.2 进入到父组件 生成静态标签 Vnode h1 666 和 h1 777；
+
+4 开始执行 mount(#app) [rootComponent -&gt; 就是 根组件 在这里是 App.vue]
+    4.1 创建 App 的 Vnode - 执行 render - 执行 patch【packages/runtime-core/src/renderer.ts】
+    mount(#app)的 patch过程：
+    4.2 processComponent - mountComponent - createComponentInstance 【FX 创建实例 过程】- 
+        4.2.1 给 instance 绑定了 uid
+        4.2.2 ctx 映射到 instance 自己
+        4.2.3 绑定了 root 指向 根节点的 instance 【跟节点的 instance 指向 自己】
+        4.2.4 绑定了 emit 【FX】
+        4.2.5 这个 实例 应该就是 vue3中 暴露给我们的 ctx（setup中第二个参数）
+    4.3 setupComponent - setupStatefulComponent - finishComponentSetup 【FX】
+        4.3.1 setupComponent 先初始化props和slots【FX 过程】 然后 判断 当前 是否是 组件，如果是 执行 setupStatefulComponent 否则返回 undefined。
+        4.3.2 setupStatefulComponent 这里主要是 判断 是否是 Composition API 。若是 【FX setup逻辑过程】 先忽略。若不是 执行 finishComponentSetup
+        4.3.3 finishComponentSetup 完成setUp初始化， 将__script.render 函数赋值给 组件实例 instance， 并且在这里做了Vue2.x 的兼容 - 结束
+    4.4 执行 setupRenderEffect 【FX 创建副作用过程】创建 update，这里执行了一个effect 方法， 应该是副作用队列
+    patch 过程 结束。
+5. 开始执行 __script 的 render 函数 子节点的 【FX 谁执行的这个函数】
+6. 创建 Vnode - 依次生成 最终生成 Fragment 根 Vnode
+    6.1 执行 processFragment 【FX 过程】
+7. 依次执行 patch【这个patch 谁 执行的 FX】 通过 processElement -&gt; mountElement -&gt; hostSetElementText -&gt; hostInsert 将子元素真正插入 dom 
+    7.1 hostCreateElement 映射 createElement 创建 标签 【packages/runtime-dom/src/nodeOps.ts】
+    7.2 hostSetElementText 映射 setElementText 将文本内容插入标签
+    7.3 hostInsert 映射 insert 将 dom 使用 insertBefore 插入对应位置
+
+-- 整个流程还没有走完 [patch的整套逻辑]
+</code></pre><hr>
+<h2 id="返回应用实例-createAppContext"><a href="#返回应用实例-createAppContext" class="headerlink" title="返回应用实例 (createAppContext)"></a>返回应用实例 (createAppContext)</h2><p>packages\runtime-core\src\apiCreateApp.ts -&gt; createAppContext</p>
+<h2 id="劫持在那里创建："><a href="#劫持在那里创建：" class="headerlink" title="劫持在那里创建："></a>劫持在那里创建：</h2><p>packages\reactivity\src\reactive.ts =&gt; createReactiveObject方法</p>
+<h2 id="生命周期-钩子函数"><a href="#生命周期-钩子函数" class="headerlink" title="生命周期/钩子函数"></a>生命周期/钩子函数</h2><p>packages\runtime-core\src\apiLifecycle.ts =&gt; injectHook方法</p>
+<h2 id="模板编译"><a href="#模板编译" class="headerlink" title="模板编译"></a>模板编译</h2><p>packages\runtime-core\src\componentProxy.ts -&gt; PublicInstanceProxyHandlers 方法</p>
+<h2 id="watchEffect逻辑"><a href="#watchEffect逻辑" class="headerlink" title="watchEffect逻辑"></a>watchEffect逻辑</h2><p>packages\runtime-core\src\apiWatch.ts -&gt; watch方法（118）</p>
+
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/09/27/Vue3源码学习/Ref/" data-toggle="tooltip" data-placement="top" title="学习Vue3源码--Ref篇">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/08/02/每周一段JavaScript权威指南/week5/" data-toggle="tooltip" data-placement="top" title="每周一段JavaScript权威指南-第五周">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents    toc是根据#作为锚链接的 -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#目录-runtime-core"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">目录:runtime-core</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#文件目录"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">文件目录</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#案例在TestLoL的Vite尝试"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">案例在TestLoL的Vite尝试</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#创建APP-createApp"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">创建APP (createApp)</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#如何将子元素插入到Dom中"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">如何将子元素插入到Dom中</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#返回应用实例-createAppContext"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">返回应用实例 (createAppContext)</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#劫持在那里创建："><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">劫持在那里创建：</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#生命周期-钩子函数"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">生命周期/钩子函数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#模板编译"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">模板编译</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#watchEffect逻辑"><span class="toc-nav-number">1.9.</span> <span class="toc-nav-text">watchEffect逻辑</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Vue3" title="Vue3">Vue3</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://github.com/GTRgoSky/TestLOL" target="_blank">GitHub-Demo</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                <p class="copyright text-muted">
+                    Copyright &copy; Wings 2022 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    主题来自: <a target="_black" href="https://github.com/huweihuang/hexo-theme-huweihuang/blob/master/_config.yml">这里</a>
+                    <a target="_black" href="https://www.huweihuang.com/">这里</a>
+                    <br>
+                    小美女华华专属
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://GTRgoSky.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://GTRgoSky.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

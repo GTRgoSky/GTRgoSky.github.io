@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在dev部署">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          学习Vue3源码--effect篇 - Wings Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://GTRgoSky.github.io.git/2020/09/28/Vue3源码学习/effect/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img-blog.csdnimg.cn/2020050614115438.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Vue3" title="Vue3">Vue3</a>
+                            
+                        </div>
+                        <h1>学习Vue3源码--effect篇</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Wings on
+                            2020-09-28
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wings Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="effect篇"><a href="#effect篇" class="headerlink" title="effect篇"></a>effect篇</h2><blockquote>
+<p>packages\reactivity\src\effect.ts</p>
+</blockquote>
+<h3 id="targetMap"><a href="#targetMap" class="headerlink" title="targetMap"></a>targetMap</h3><pre><code>创建一个 全局 weakMap 对象，用于缓存所有 有 副作用的目标
+</code></pre><h3 id="effectStack"><a href="#effectStack" class="headerlink" title="effectStack"></a>effectStack</h3><pre><code>副作用堆栈 一个数组List，先进后出 [FX 干嘛用的]
+</code></pre><h3 id="activeEffect"><a href="#activeEffect" class="headerlink" title="activeEffect"></a>activeEffect</h3><pre><code>一个 正在被激活的 副作用 Function, 并且挂在了一些对象
+</code></pre><h3 id="isEffect"><a href="#isEffect" class="headerlink" title="isEffect"></a>isEffect</h3><pre><code>如果fn 存在 且具有副作用标示 _isEffect 返回true 表示具有副作用。
+</code></pre><h3 id="effect-fn-options-创建一个副作用函数"><a href="#effect-fn-options-创建一个副作用函数" class="headerlink" title="effect(fn, options) - 创建一个副作用函数"></a>effect(fn, options) - 创建一个副作用函数</h3><pre><code>1. 如果 fn 已经是一个副作用函数 则 fn = fn.raw 
+(因为在createReactiveEffect中, 我们把 raw 赋值为 fn
+所以, 副作用函数的 raw 都是他的执行方法) 
+2. 用 createReactiveEffect 创建 真正的 副作用 effect 方法
+(其实这个 effect 就是 reactiveEffect 方法)
+3. 创建完成后 如果 options 没有配置 lazy 则立即执行一次 effect
+4. 返回 effect
+</code></pre><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">effect</span>&lt;<span class="title">T</span> = <span class="title">any</span>&gt;(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  fn: (</span>) =&gt; <span class="title">T</span>,</span></span><br><span class="line"><span class="function">  <span class="title">options</span>: <span class="title">ReactiveEffectOptions</span> = <span class="title">EMPTY_OBJ</span></span></span><br><span class="line"><span class="function">): <span class="title">ReactiveEffect</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (isEffect(fn)) &#123;</span><br><span class="line">    fn = fn.raw</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">const</span> effect = createReactiveEffect(fn, options)</span><br><span class="line">  <span class="keyword">if</span> (!options.lazy) &#123;</span><br><span class="line">    effect()</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> effect</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="let-uid-0"><a href="#let-uid-0" class="headerlink" title="let uid = 0;"></a>let uid = 0;</h3><pre><code>创建一个标记
+</code></pre><h3 id="createReactiveEffect-fn-option-真正执行创建"><a href="#createReactiveEffect-fn-option-真正执行创建" class="headerlink" title="createReactiveEffect(fn, option) - 真正执行创建"></a>createReactiveEffect(fn, option) - 真正执行创建</h3><pre><code>1. 声明一个方法 effect = reactiveEffect (断言是一个副作用函数)
+2. 给 effect 绑定一些属性: [FX 属性作用未知]
+    effect.id = uid++ // id
+    effect._isEffect = true // 是否为 副作用函数
+    effect.active = true // 是否激活
+    effect.raw = fn // 真正副作用方法
+    effect.deps = [] // Array&lt;Dep&gt; --- Dep = Set&lt;ReactiveEffect&gt; // 
+        activeEffect.deps.push(dep)
+        用于存储data对象的Set-Set中又存储的时DOM的副作用activeEffect
+    effect.options = options // 配置参数
+3. reactiveEffect 方法作用:
+    3.1 如果 effect.active 为 false [FX什么时候为false],
+    return options.scheduler ?  undefined : fn() [FX options.scheduler 是什么]
+    3.2 如果 effectStack 不包含 effect 进入判断
+    3.3 执行 cleanup(effect) =&gt; 获取 deps 如果 deps 有值 删除deps中的所有副作用
+    3.4 enableTracking() : trackStack.push(shouldTrack === true);
+    3.5 effectStack.push(effect) 将 副作用 推入栈
+    3.6 activeEffect = effect 副作用
+    3.7 执行 fn() 返回值 - 这里如果 fn 执行后依然有副作用创建,则递归执行
+    3.8 弹出尾部 effect
+    3.9 resetTracking() :  
+        const last = trackStack.pop() 
+        shouldTrack = last === undefined ? true : last
+        这个 shouldTrack 只有为 True 时,才会在 track 创建 追踪
+    3.10 activeEffect = effectStack[effectStack.length - 1];
+</code></pre><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line">type Dep = <span class="built_in">Set</span>&lt;ReactiveEffect&gt;</span><br><span class="line"></span><br><span class="line">interface ReactiveEffect&lt;T = any&gt; &#123;</span><br><span class="line">  (): T</span><br><span class="line">  _isEffect: <span class="literal">true</span></span><br><span class="line">  id: number</span><br><span class="line">  active: boolean</span><br><span class="line">  raw: <span class="function"><span class="params">()</span> =&gt;</span> T</span><br><span class="line">  deps: <span class="built_in">Array</span>&lt;Dep&gt;</span><br><span class="line">  options: ReactiveEffectOptions</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">interface ReactiveEffectOptions &#123;</span><br><span class="line">  lazy?: boolean</span><br><span class="line">  scheduler?: <span class="function">(<span class="params">job: ReactiveEffect</span>) =&gt;</span> <span class="keyword">void</span></span><br><span class="line">  onTrack?: <span class="function">(<span class="params">event: DebuggerEvent</span>) =&gt;</span> <span class="keyword">void</span></span><br><span class="line">  onTrigger?: <span class="function">(<span class="params">event: DebuggerEvent</span>) =&gt;</span> <span class="keyword">void</span></span><br><span class="line">  onStop?: <span class="function"><span class="params">()</span> =&gt;</span> <span class="keyword">void</span></span><br><span class="line">  allowRecurse?: boolean</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createReactiveEffect</span>&lt;<span class="title">T</span> = <span class="title">any</span>&gt;(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  fn: (</span>) =&gt; <span class="title">T</span>,</span></span><br><span class="line"><span class="function">  <span class="title">options</span>: <span class="title">ReactiveEffectOptions</span></span></span><br><span class="line"><span class="function">): <span class="title">ReactiveEffect</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> effect = <span class="function"><span class="keyword">function</span> <span class="title">reactiveEffect</span>(<span class="params"></span>): <span class="title">unknown</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!effect.active) &#123;</span><br><span class="line">      <span class="keyword">return</span> options.scheduler ? <span class="literal">undefined</span> : fn()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!effectStack.includes(effect)) &#123;</span><br><span class="line">      cleanup(effect)</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">        enableTracking()</span><br><span class="line">        effectStack.push(effect)</span><br><span class="line">        activeEffect = effect</span><br><span class="line">        <span class="keyword">return</span> fn()</span><br><span class="line">      &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        effectStack.pop()</span><br><span class="line">        resetTracking()</span><br><span class="line">        activeEffect = effectStack[effectStack.length - <span class="number">1</span>]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; <span class="keyword">as</span> ReactiveEffect</span><br><span class="line">  effect.id = uid++</span><br><span class="line">  effect._isEffect = <span class="literal">true</span></span><br><span class="line">  effect.active = <span class="literal">true</span></span><br><span class="line">  effect.raw = fn</span><br><span class="line">  effect.deps = []</span><br><span class="line">  effect.options = options</span><br><span class="line">  <span class="keyword">return</span> effect</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">cleanup</span>(<span class="params">effect: ReactiveEffect</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; deps &#125; = effect</span><br><span class="line">  <span class="keyword">if</span> (deps.length) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; deps.length; i++) &#123;</span><br><span class="line">      deps[i].delete(effect)</span><br><span class="line">    &#125;</span><br><span class="line">    deps.length = <span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> shouldTrack = <span class="literal">true</span> <span class="comment">// 是否应该追踪</span></span><br><span class="line"><span class="keyword">const</span> trackStack: boolean[] = [] <span class="comment">// 追踪栈</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">enableTracking</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  trackStack.push(shouldTrack)</span><br><span class="line">  shouldTrack = <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">resetTracking</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> last = trackStack.pop()</span><br><span class="line">  shouldTrack = last === <span class="literal">undefined</span> ? <span class="literal">true</span> : last</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="pauseTracking-enableTracking-resetTracking"><a href="#pauseTracking-enableTracking-resetTracking" class="headerlink" title="pauseTracking/enableTracking/resetTracking"></a>pauseTracking/enableTracking/resetTracking</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 创建不被追踪的 (即非响应式的值) 记录</span></span><br><span class="line"><span class="comment">// 官方解释: 避免数组的原生方法导致长度被追踪,这在某些情况下会导致无限循环</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">pauseTracking</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    trackStack.push(shouldTrack) <span class="comment">// 上一个 对象追踪的状态</span></span><br><span class="line">    shouldTrack = <span class="literal">false</span> <span class="comment">// 这里才是当前 对象是否追踪的 状态</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个 响应式 值 记录</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">enableTracking</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    trackStack.push(shouldTrack)</span><br><span class="line">    shouldTrack = <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 弹出这个记录</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">resetTracking</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> last = trackStack.pop()</span><br><span class="line">    shouldTrack = last === <span class="literal">undefined</span> ? <span class="literal">true</span> : last</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="track-target-type-key-追踪器"><a href="#track-target-type-key-追踪器" class="headerlink" title="track(target, type, key) - 追踪器"></a>track(target, type, key) - 追踪器</h3><pre><code>1. 如果 shouldTrack == false || activeEffect 不存在 直接返回不创建
+2. 在targetMap 中 以 target 为 key 创建 depsMap
+3. 在depsMap 中 以 key 为 key值 创建 dep: Set
+4. 判断dep 是否含有 当前激活的 activeEffect 没有下一步:
+5. dep.add(activeEffect) -- activeEffect.deps.push(dep); 一个相互存储
+    dep以Set形式存储属于当前key值得所有DOM副作用
+    activeEffect.deps以数组形式 存储所有 该副作用影响到得keyMap
+</code></pre><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">track</span>(<span class="params">target: object, type: TrackOpTypes, key: unknown</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (!shouldTrack || activeEffect === <span class="literal">undefined</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> depsMap = targetMap.get(target)</span><br><span class="line">  <span class="keyword">if</span> (!depsMap) &#123;</span><br><span class="line">    targetMap.set(target, (depsMap = <span class="keyword">new</span> <span class="built_in">Map</span>()))</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">let</span> dep = depsMap.get(key)</span><br><span class="line">  <span class="keyword">if</span> (!dep) &#123;</span><br><span class="line">    depsMap.set(key, (dep = <span class="keyword">new</span> <span class="built_in">Set</span>()))</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (!dep.has(activeEffect)) &#123;</span><br><span class="line">    dep.add(activeEffect)</span><br><span class="line">    activeEffect.deps.push(dep)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="trigger"><a href="#trigger" class="headerlink" title="trigger"></a>trigger</h3><pre><code>1. 从 targetMap 以 target 获取对应 depsMap
+2. 没有表面没有副作用直接返回,有进行下一步:
+3. 声明一个 effects: Set
+4. 声明一个 add(effectsToAdd: Set&lt;ReactiveEffect&gt; | undefined) 函数
+    这个函数用于向 effects对象: Set 中添加 副作用
+5. type得区别:
+    5.1 如果 type 是 clear 则 意味着触发所有绑定在该 target 得副作用
+    5.2 如果 key是一个 length 并且 target 是一个 Array&lt;Set&gt;.则:
+        遍历 depsMap(因为代表着它也是一个数组Map,key都是数组下标)
+        if (key === &apos;length&apos; || key &gt;= (newValue as number)) 通过这个判断执行 add(dep)
+    5.3 进入else 如果 key 不是 undefiend 则直接 add(depsMap.get(key))
+    5.4 如果 type 分别是 ADD/DELETE/SET等执行一些逻辑,将响应副作用加入 effects
+6. 声明 run 函数,执行 effect() --- effects.forEach(run)
+</code></pre><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 触发器</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">trigger</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">  target: object,</span></span></span><br><span class="line"><span class="function"><span class="params">  type: TriggerOpTypes,</span></span></span><br><span class="line"><span class="function"><span class="params">  key?: unknown,</span></span></span><br><span class="line"><span class="function"><span class="params">  newValue?: unknown,</span></span></span><br><span class="line"><span class="function"><span class="params">  oldValue?: unknown,</span></span></span><br><span class="line"><span class="function"><span class="params">  oldTarget?: Map&lt;unknown, unknown&gt; | Set&lt;unknown&gt;</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> depsMap = targetMap.get(target)</span><br><span class="line">  <span class="keyword">if</span> (!depsMap) &#123;</span><br><span class="line">    <span class="comment">// never been tracked</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> effects = <span class="keyword">new</span> <span class="built_in">Set</span>&lt;ReactiveEffect&gt;()</span><br><span class="line">  <span class="keyword">const</span> add = <span class="function">(<span class="params">effectsToAdd: <span class="built_in">Set</span>&lt;ReactiveEffect&gt; | <span class="literal">undefined</span></span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (effectsToAdd) &#123;</span><br><span class="line">      effectsToAdd.forEach(<span class="function"><span class="params">effect</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (effect !== activeEffect || effect.options.allowRecurse) &#123;</span><br><span class="line">          effects.add(effect)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (type === TriggerOpTypes.CLEAR) &#123;</span><br><span class="line">    <span class="comment">// collection being cleared</span></span><br><span class="line">    <span class="comment">// trigger all effects for target</span></span><br><span class="line">    depsMap.forEach(add)</span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (key === <span class="string">'length'</span> &amp;&amp; isArray(target)) &#123;</span><br><span class="line">    depsMap.forEach(<span class="function">(<span class="params">dep, key</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (key === <span class="string">'length'</span> || key &gt;= (newValue <span class="keyword">as</span> number)) &#123;</span><br><span class="line">        add(dep)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// schedule runs for SET | ADD | DELETE</span></span><br><span class="line">    <span class="keyword">if</span> (key !== <span class="keyword">void</span> <span class="number">0</span>) &#123;</span><br><span class="line">      add(depsMap.get(key))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// also run for iteration key on ADD | DELETE | Map.SET</span></span><br><span class="line">    <span class="keyword">switch</span> (type) &#123;</span><br><span class="line">      <span class="keyword">case</span> TriggerOpTypes.ADD:</span><br><span class="line">        <span class="keyword">if</span> (!isArray(target)) &#123;</span><br><span class="line">          add(depsMap.get(ITERATE_KEY))</span><br><span class="line">          <span class="keyword">if</span> (isMap(target)) &#123;</span><br><span class="line">            add(depsMap.get(MAP_KEY_ITERATE_KEY))</span><br><span class="line">          &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isIntegerKey(key)) &#123;</span><br><span class="line">          <span class="comment">// new index added to array -&gt; length changes</span></span><br><span class="line">          add(depsMap.get(<span class="string">'length'</span>))</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">      <span class="keyword">case</span> TriggerOpTypes.DELETE:</span><br><span class="line">        <span class="keyword">if</span> (!isArray(target)) &#123;</span><br><span class="line">          add(depsMap.get(ITERATE_KEY))</span><br><span class="line">          <span class="keyword">if</span> (isMap(target)) &#123;</span><br><span class="line">            add(depsMap.get(MAP_KEY_ITERATE_KEY))</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">      <span class="keyword">case</span> TriggerOpTypes.SET:</span><br><span class="line">        <span class="keyword">if</span> (isMap(target)) &#123;</span><br><span class="line">          add(depsMap.get(ITERATE_KEY))</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> run = <span class="function">(<span class="params">effect: ReactiveEffect</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (__DEV__ &amp;&amp; effect.options.onTrigger) &#123;</span><br><span class="line">      effect.options.onTrigger(&#123;</span><br><span class="line">        effect,</span><br><span class="line">        target,</span><br><span class="line">        key,</span><br><span class="line">        type,</span><br><span class="line">        newValue,</span><br><span class="line">        oldValue,</span><br><span class="line">        oldTarget</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (effect.options.scheduler) &#123;</span><br><span class="line">      effect.options.scheduler(effect)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      effect()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  effects.forEach(run)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程:"></a>流程:</h3><pre><code>1. effect 声明副作用 - 是用来影响页面DOM的
+2. 立即执行 effect
+3. cleanup 清楚缓存副作用
+4. enableTracking 加入追踪
+5. effectStack.push(effect)
+6. 激活当前activeEffect
+7. 执行 真正 fn() - 这里其实是 runtime-core的 componentEffect (实例update时)
+    7.1 执行 setup 创建里面得 响应式数据
+8. track(target, type, key) 创建追踪器 这个target就是被追踪的对象 - 追踪数据的
+9. targetMap.set(target, (depsMap = new Map()))
+10. depsMap.set(key, (dep = new Set()))
+11. dep.add(activeEffect) 将副作用加入 dep
+12. activeEffect.deps.push(dep) 将data的DOM副作用存入DOM的deps
+13. effectStack.pop(); 弹出最后一个
+14. resetTracking() 删除当前追踪状态
+15. activeEffect = effectStack[effectStack.length - 1] 为将激活的副作用赋值
+16. 下一次 track
+</code></pre>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/10/13/Vue3源码学习/reactive/" data-toggle="tooltip" data-placement="top" title="学习Vue3源码-- reactive篇">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/09/27/Vue3源码学习/Ref/" data-toggle="tooltip" data-placement="top" title="学习Vue3源码--Ref篇">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents    toc是根据#作为锚链接的 -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#effect篇"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">effect篇</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#targetMap"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">targetMap</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#effectStack"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">effectStack</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#activeEffect"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">activeEffect</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#isEffect"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">isEffect</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#effect-fn-options-创建一个副作用函数"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">effect(fn, options) - 创建一个副作用函数</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#let-uid-0"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">let uid = 0;</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#createReactiveEffect-fn-option-真正执行创建"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">createReactiveEffect(fn, option) - 真正执行创建</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#pauseTracking-enableTracking-resetTracking"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">pauseTracking/enableTracking/resetTracking</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#track-target-type-key-追踪器"><span class="toc-nav-number">1.9.</span> <span class="toc-nav-text">track(target, type, key) - 追踪器</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#trigger"><span class="toc-nav-number">1.10.</span> <span class="toc-nav-text">trigger</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#流程"><span class="toc-nav-number">1.11.</span> <span class="toc-nav-text">流程:</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Vue3" title="Vue3">Vue3</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://github.com/GTRgoSky/TestLOL" target="_blank">GitHub-Demo</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                <p class="copyright text-muted">
+                    Copyright &copy; Wings 2022 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    主题来自: <a target="_black" href="https://github.com/huweihuang/hexo-theme-huweihuang/blob/master/_config.yml">这里</a>
+                    <a target="_black" href="https://www.huweihuang.com/">这里</a>
+                    <br>
+                    小美女华华专属
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://GTRgoSky.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://GTRgoSky.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

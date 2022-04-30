@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在dev部署">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          学习Vue3源码-- reactive篇 - Wings Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://GTRgoSky.github.io.git/2020/10/13/Vue3源码学习/reactive/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img-blog.csdnimg.cn/2020050614115438.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Vue3" title="Vue3">Vue3</a>
+                            
+                        </div>
+                        <h1>学习Vue3源码-- reactive篇</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Wings on
+                            2020-10-13
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wings Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="reactive"><a href="#reactive" class="headerlink" title="reactive"></a>reactive</h2><blockquote>
+<p>packages\reactivity\src\reactive.ts<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> r = reactive(&#123;&#125;)</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="声明全局-代理Map-只读Map"><a href="#声明全局-代理Map-只读Map" class="headerlink" title="声明全局 代理Map/只读Map"></a>声明全局 代理Map/只读Map</h3><pre><code>const reactiveMap = new WeakMap&lt;Target, any&gt;()
+const readonlyMap = new WeakMap&lt;Target, any&gt;()
+</code></pre><h3 id="reactive-target-object"><a href="#reactive-target-object" class="headerlink" title="reactive(target: object)"></a>reactive(target: object)</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// entry:</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reactive</span>(<span class="params">target: object</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// if trying to observe a readonly proxy, return the readonly version.</span></span><br><span class="line">    <span class="keyword">if</span> (target &amp;&amp; (target <span class="keyword">as</span> Target)[ReactiveFlags.IS_READONLY]) &#123;</span><br><span class="line">        <span class="keyword">return</span> target</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> createReactiveObject(</span><br><span class="line">        target,</span><br><span class="line">        <span class="literal">false</span>,</span><br><span class="line">        mutableHandlers,</span><br><span class="line">        mutableCollectionHandlers</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// mutableHandlers 是做什么得? - ProxyHandler 代理小助手</span></span><br><span class="line"><span class="comment">// 请参考 mutableHandlers - mutableHandlers</span></span><br><span class="line"><span class="keyword">const</span> mutableHandlers: ProxyHandler&lt;object&gt; = &#123;</span><br><span class="line">    get,</span><br><span class="line">    set,</span><br><span class="line">    deleteProperty,</span><br><span class="line">    has,</span><br><span class="line">    ownKeys</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="shallowReactive"><a href="#shallowReactive" class="headerlink" title="shallowReactive"></a>shallowReactive</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">createReactiveObject(</span><br><span class="line">    target,</span><br><span class="line">    <span class="literal">false</span>,</span><br><span class="line">    shallowReactiveHandlers,</span><br><span class="line">    shallowCollectionHandlers</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="readonly"><a href="#readonly" class="headerlink" title="readonly"></a>readonly</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">createReactiveObject(</span><br><span class="line">    target,</span><br><span class="line">    <span class="literal">true</span>,</span><br><span class="line">    readonlyHandlers,</span><br><span class="line">    readonlyCollectionHandlers</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="shallowReadonly"><a href="#shallowReadonly" class="headerlink" title="shallowReadonly"></a>shallowReadonly</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">createReactiveObject(</span><br><span class="line">    target,</span><br><span class="line">    <span class="literal">true</span>,</span><br><span class="line">    shallowReadonlyHandlers,</span><br><span class="line">    readonlyCollectionHandlers</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="createReactiveObject"><a href="#createReactiveObject" class="headerlink" title="createReactiveObject"></a>createReactiveObject</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 将类型 转为字符串用于识别</span></span><br><span class="line"><span class="keyword">const</span> objectToString = <span class="built_in">Object</span>.prototype.toString</span><br><span class="line"><span class="keyword">const</span> toTypeString = (value: unknown): <span class="function"><span class="params">string</span> =&gt;</span> objectToString.call(value)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> toRawType = (value: unknown): <span class="function"><span class="params">string</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> toTypeString(value).slice(<span class="number">8</span>, <span class="number">-1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据对象类型 分配 TargetType</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">targetTypeMap</span>(<span class="params">rawType: string</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (rawType) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'Object'</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'Array'</span>:</span><br><span class="line">            <span class="keyword">return</span> TargetType.COMMON</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'Map'</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'Set'</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'WeakMap'</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="string">'WeakSet'</span>:</span><br><span class="line">            <span class="keyword">return</span> TargetType.COLLECTION</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">return</span> TargetType.INVALID</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据 value 得属性 返回对应 TargetType 值</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getTargetType</span>(<span class="params">value: Target</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> value[ReactiveFlags.SKIP] || !<span class="built_in">Object</span>.isExtensible(value)</span><br><span class="line">        ? TargetType.INVALID</span><br><span class="line">        : targetTypeMap(toRawType(value))</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 所有劫持在这里创建</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">createReactiveObject</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    target: Target,</span></span></span><br><span class="line"><span class="function"><span class="params">    isReadonly: boolean,</span></span></span><br><span class="line"><span class="function"><span class="params">    baseHandlers: ProxyHandler&lt;any&gt;, <span class="regexp">//</span> [FX 做了什么]</span></span></span><br><span class="line"><span class="function"><span class="params">    collectionHandlers: ProxyHandler&lt;any&gt; <span class="regexp">//</span> [FX做了什么]</span></span></span><br><span class="line"><span class="function"><span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 不是对象直接返回并警告</span></span><br><span class="line">    <span class="keyword">if</span> (!isObject(target)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (__DEV__) &#123;</span><br><span class="line">            <span class="built_in">console</span>.warn(<span class="string">`value cannot be made reactive: <span class="subst">$&#123;<span class="built_in">String</span>(target)&#125;</span>`</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> target</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// target is already a Proxy, return it.</span></span><br><span class="line">    <span class="comment">// exception: calling readonly() on a reactive object</span></span><br><span class="line">    <span class="comment">// 如果是 原生对象,或者已经是一个 reactive 对象 直接返回 target</span></span><br><span class="line">    <span class="keyword">if</span> (</span><br><span class="line">        target[ReactiveFlags.RAW] &amp;&amp;</span><br><span class="line">        !(isReadonly &amp;&amp; target[ReactiveFlags.IS_REACTIVE])</span><br><span class="line">    ) &#123;</span><br><span class="line">        <span class="keyword">return</span> target</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// target already has corresponding Proxy</span></span><br><span class="line">    <span class="comment">// 赋值 代理 Map</span></span><br><span class="line">    <span class="keyword">const</span> proxyMap = isReadonly ? readonlyMap : reactiveMap</span><br><span class="line">    <span class="comment">// 如果已经有了代理直接返回</span></span><br><span class="line">    <span class="keyword">const</span> existingProxy = proxyMap.get(target)</span><br><span class="line">    <span class="keyword">if</span> (existingProxy) &#123;</span><br><span class="line">        <span class="keyword">return</span> existingProxy</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// only a whitelist of value types can be observed.</span></span><br><span class="line">    <span class="comment">// 只能观察值类型的白名单</span></span><br><span class="line">    <span class="keyword">const</span> targetType = getTargetType(target)</span><br><span class="line">    <span class="comment">// 如果是非 白名单,直接返回 对象</span></span><br><span class="line">    <span class="keyword">if</span> (targetType === TargetType.INVALID) &#123;</span><br><span class="line">        <span class="keyword">return</span> target</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建代理, 根据 TargetType 类型 采用不同劫持</span></span><br><span class="line">    <span class="keyword">const</span> proxy = <span class="keyword">new</span> <span class="built_in">Proxy</span>(</span><br><span class="line">        target,</span><br><span class="line">        <span class="comment">// 判断 targetType 是否是 Map/Set/WeakMap/WeakSet </span></span><br><span class="line">        targetType === TargetType.COLLECTION ? collectionHandlers : baseHandlers</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 代理地图 以 target 为key 存储 目标对象的 代理</span></span><br><span class="line">    <span class="comment">// 用途1： 拥有目标函数的缓存功能，节省开支</span></span><br><span class="line">    proxyMap.set(target, proxy)</span><br><span class="line">    <span class="keyword">return</span> proxy</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="isReactive"><a href="#isReactive" class="headerlink" title="isReactive"></a>isReactive</h3><pre><code>1. 判断 value 若是只读, 如果是, 获取 value 得 __v_raw 对象(即原生对象)
+递归 isReactive
+2. 若不是 只读,直接判断 value 上是否含有 __v_isReactive
+</code></pre><h3 id="isReadonly"><a href="#isReadonly" class="headerlink" title="isReadonly"></a>isReadonly</h3><pre><code>判断 value 上是否有 __v_isReadonly 标识
+</code></pre><h3 id="isProxy"><a href="#isProxy" class="headerlink" title="isProxy"></a>isProxy</h3><pre><code>判断 value 是否是被代理对象
+</code></pre><h3 id="markRaw-value"><a href="#markRaw-value" class="headerlink" title="markRaw(value)"></a>markRaw(value)</h3><pre><code>创建一个 value 对象,不会被监听劫持
+</code></pre>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/10/13/Vue3源码学习/baseHandlers/" data-toggle="tooltip" data-placement="top" title="学习Vue3源码-- baseHandlers篇">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/09/28/Vue3源码学习/effect/" data-toggle="tooltip" data-placement="top" title="学习Vue3源码--effect篇">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents    toc是根据#作为锚链接的 -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#reactive"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">reactive</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#声明全局-代理Map-只读Map"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">声明全局 代理Map/只读Map</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#reactive-target-object"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">reactive(target: object)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#shallowReactive"><span class="toc-nav-number">1.3.</span> <span class="toc-nav-text">shallowReactive</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#readonly"><span class="toc-nav-number">1.4.</span> <span class="toc-nav-text">readonly</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#shallowReadonly"><span class="toc-nav-number">1.5.</span> <span class="toc-nav-text">shallowReadonly</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#createReactiveObject"><span class="toc-nav-number">1.6.</span> <span class="toc-nav-text">createReactiveObject</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#isReactive"><span class="toc-nav-number">1.7.</span> <span class="toc-nav-text">isReactive</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#isReadonly"><span class="toc-nav-number">1.8.</span> <span class="toc-nav-text">isReadonly</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#isProxy"><span class="toc-nav-number">1.9.</span> <span class="toc-nav-text">isProxy</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#markRaw-value"><span class="toc-nav-number">1.10.</span> <span class="toc-nav-text">markRaw(value)</span></a></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Vue3" title="Vue3">Vue3</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://github.com/GTRgoSky/TestLOL" target="_blank">GitHub-Demo</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                <p class="copyright text-muted">
+                    Copyright &copy; Wings 2022 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    主题来自: <a target="_black" href="https://github.com/huweihuang/hexo-theme-huweihuang/blob/master/_config.yml">这里</a>
+                    <a target="_black" href="https://www.huweihuang.com/">这里</a>
+                    <br>
+                    小美女华华专属
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://GTRgoSky.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://GTRgoSky.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

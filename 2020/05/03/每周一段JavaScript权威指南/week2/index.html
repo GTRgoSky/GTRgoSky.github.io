@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="在dev部署">
+    <meta name="keyword" content="">
+    <link rel="shortcut icon" href="/img/ironman-draw.png">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <title>
+        
+          每周一段JavaScript权威指南-第二周 - Wings Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://GTRgoSky.github.io.git/2020/05/03/每周一段JavaScript权威指南/week2/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS --> 
+    <link rel="stylesheet" href="/css/beantech.min.css">
+    
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <link rel="stylesheet" href="/css/widget.css">
+
+    <link rel="stylesheet" href="/css/rocket.css">
+
+    <link rel="stylesheet" href="/css/signature.css">
+
+    <link rel="stylesheet" href="/css/toc.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            background-image: url('https://img-blog.csdnimg.cn/2020050614115438.png')
+            /*post*/
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#JavaScript权威指南" title="JavaScript权威指南">JavaScript权威指南</a>
+                            
+                        </div>
+                        <h1>每周一段JavaScript权威指南-第二周</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by Wings on
+                            2020-05-03
+                        </span>
+                    </div>
+                
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Wings Blogs</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                        <li>
+                            <a href="/about/About.html">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Modify by Yu-Hsuan Yen -->
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="第二周"><a href="#第二周" class="headerlink" title="第二周"></a>第二周</h1><p>（第六章—第七章）</p>
+<blockquote>
+<p>finish</p>
+</blockquote>
+<hr>
+<h2 id="1：第六章（对象）"><a href="#1：第六章（对象）" class="headerlink" title="1：第六章（对象）"></a>1：第六章（对象）</h2><blockquote>
+<p>对象是一种复合值。可以看作是属性的无序集合。<br>对象类型：内置对象[Date,Array],宿主对象[window,documnet],自定义对象[new Object()…]<br>两类属性：自有属性；继承属性。</p>
+</blockquote>
+<p>属性特性：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    writable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//是否可以设置该属性的值。</span></span><br><span class="line">    enumerable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//该属性是否可以枚举。</span></span><br><span class="line">    configurable: <span class="literal">true</span>|<span class="literal">false</span>,<span class="comment">// 是否可以删除或者修改该属性。</span></span><br><span class="line">    value: any, <span class="comment">// 该属性的值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="1、创建对象："><a href="#1、创建对象：" class="headerlink" title="1、创建对象："></a>1、创建对象：</h3><pre><code>1.对象直接量：var obj = {};
+每次运算都创建一个新的对象。
+2.通过new创建： var obj = new Object();
+用构造函数创建一个新的对象。每个原始类型都有一个内置的构造函数。
+3.通过create创建： var obj = Objcet.create(Object.prototype);
+Object.create创建一个新对象。其中第一个是对象原型对象的指向。第二个是可选参数，用于对对象的属性进行描述【属性特性】。示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> o = <span class="built_in">Object</span>.create(<span class="built_in">Object</span>.prototype, &#123;</span><br><span class="line">  <span class="comment">// foo会成为所创建对象的数据属性</span></span><br><span class="line">  foo: &#123; </span><br><span class="line">    writable:<span class="literal">true</span>,</span><br><span class="line">    configurable:<span class="literal">true</span>,</span><br><span class="line">    value: <span class="string">"hello"</span> </span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// bar会成为所创建对象的访问器属性</span></span><br><span class="line">  bar: &#123;</span><br><span class="line">    configurable: <span class="literal">false</span>,</span><br><span class="line">    get: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="keyword">return</span> <span class="number">10</span> &#125;,</span><br><span class="line">    set: <span class="function"><span class="keyword">function</span>(<span class="params">value</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">"Setting `o.bar` to"</span>, value);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">o =&gt; &#123;</span></span><br><span class="line"><span class="comment">    foo:"hello",</span></span><br><span class="line"><span class="comment">    bar: 10, </span></span><br><span class="line"><span class="comment">    get bar:function()&#123;&#125;, </span></span><br><span class="line"><span class="comment">    set bar:function()&#123;&#125;,</span></span><br><span class="line"><span class="comment">    __proto__:Object.prototype</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<pre><code>1、普通对象都具有原型。
+2、没有原型的对象位数不多。Object.prototype就是其中之一。它不继承任何属性。
+*即：Object.prototype.__proto__ = null;*
+3、所有的内置函数都具有一个继承自Object.prototype的原型。
+*即：Date.prototype的属性继承自Object.prototype。*
+4、由new Date创建的Date对象同时继承自Date.prototype &amp;&amp; Object.prototype。
+构成的原型链： new Date() -&gt; Date.prototype -&gt; Object.prototype
+*即：new Date().__proto__ = Date.prototype; Date.prototype.__proto__ = Object.prototype;*
+</code></pre><blockquote>
+<p>实现一个–通过原型链继承创建一个新对象：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// inherit返回一个继承自原型对象p的新对象</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">inherit</span>(<span class="params">p</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(p == <span class="literal">null</span>) <span class="keyword">throw</span> <span class="built_in">TypeError</span>(); <span class="comment">//p不能是null</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">Object</span>.create) <span class="keyword">return</span> Objcet.create(p);</span><br><span class="line">    <span class="keyword">var</span> t = <span class="keyword">typeof</span> p;</span><br><span class="line">    <span class="keyword">if</span>(t !== <span class="string">"objcet"</span> &amp;&amp; t !== <span class="string">"function"</span>) <span class="keyword">throw</span> <span class="built_in">TypeError</span>();</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">F</span>(<span class="params"></span>) </span>&#123;&#125;;</span><br><span class="line">    F.prototype = p;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> F();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="2、属性的查询设置："><a href="#2、属性的查询设置：" class="headerlink" title="2、属性的查询设置："></a>2、属性的查询设置：</h3><pre><code>1、obj.property || obj[&apos;property&apos;];
+2、javascript所有对象都是关联数组。
+3、内置函数的构造函数都是只读的。
+4、几种赋值失败的场景：
+    1）【o = {readonly p:any}】若p是只读的，不能给p赋值。不过
+    通过使用Object.definePropery设置writeable或添加set函数可以修改只读。
+    设置只读：只给p设置get函数，或者writeable设置fasle。
+    2）【o = {__proto__: {readonly p:any}}】p是继承属性。且只读。
+    3）o不可扩展【Object.preventExtensions(o);不可逆，不能定义新属性】,
+    且o中不存在p。且没有setter方法调用。
+</code></pre><h3 id="3、删除属性："><a href="#3、删除属性：" class="headerlink" title="3、删除属性："></a>3、删除属性：</h3><pre><code>1、只是断开属性和宿主的联系，不会处理属性中的属性。    
+</code></pre><blockquote>
+<p>eg: var a = {p:{x:1}}; var b = a.p; delete a.p; {x:1}依然存在因为b在引用。</p>
+</blockquote>
+<pre><code>2、delete不能删除可配置为false的属性[configurable: false]
+3、在严格模式中删除失败会报错。非严格模式返回false
+</code></pre><h3 id="4、检查属性："><a href="#4、检查属性：" class="headerlink" title="4、检查属性："></a>4、检查属性：</h3><pre><code>1、in 左侧属性名，右侧对象名，可以检查到继承属性。 &apos;p&apos; in o =&gt; true|false;
+2、hasOwnProperty检测对象自有属性[非继承属性]。o.hasOwnProperty(&apos;p&apos;) =&gt; true|false;
+3、propertyIsEnumerable()检测自有属性的可枚举属性.=&gt; true|false;
+</code></pre><h3 id="5、枚举属性："><a href="#5、枚举属性：" class="headerlink" title="5、枚举属性："></a>5、枚举属性：</h3><pre><code>1、如何设置：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.definePropery(&#123;&#125;,<span class="string">"key"</span>, &#123;</span><br><span class="line">    value: any,</span><br><span class="line">    enumerable: <span class="built_in">Boolean</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<pre><code>2、 for...in：循环对象中所有可枚举的属性（包括原型上的）
+3、Object.getOwnPropertyNames() //返回自身属性，包括不可枚举
+4、Object.keys（） // 返回自身可枚举属性
+</code></pre><h3 id="6、属性的特性"><a href="#6、属性的特性" class="headerlink" title="6、属性的特性"></a>6、属性的特性</h3><pre><code>1、设置Object.definePropery：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.definePropery(&#123;&#125;,<span class="string">"key"</span>, &#123;</span><br><span class="line">    writable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//是否可以设置该属性的值。</span></span><br><span class="line">    enumerable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//该属性是否可以枚举。</span></span><br><span class="line">    configurable: <span class="literal">true</span>|<span class="literal">false</span>,<span class="comment">// 是否可以删除或者修改该属性。</span></span><br><span class="line">    value: any, <span class="comment">// 该属性的值</span></span><br><span class="line">    set key() &#123;&#125;, <span class="comment">//设置劫持</span></span><br><span class="line">    get key() &#123;&#125; <span class="comment">// 获取劫持</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<pre><code>2、Object.getOwnProperyDescriptor() //获取自身某个属性的描述。
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.getOwnProperyDescriptor(o,<span class="string">'p'</span>) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    writable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//是否可以设置该属性的值。</span></span><br><span class="line">    enumerable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//该属性是否可以枚举。</span></span><br><span class="line">    configurable: <span class="literal">true</span>|<span class="literal">false</span>,<span class="comment">// 是否可以删除或者修改该属性。</span></span><br><span class="line">    value: any <span class="comment">// 该属性的值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>3、Object.defineProperies //批量设置属性
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperies(&#123;&#125;, &#123;</span><br><span class="line">    x:&#123;</span><br><span class="line">        writable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//是否可以设置该属性的值。</span></span><br><span class="line">        enumerable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//该属性是否可以枚举。</span></span><br><span class="line">        configurable: <span class="literal">true</span>|<span class="literal">false</span>,<span class="comment">// 是否可以删除或者修改该属性。</span></span><br><span class="line">        value: any <span class="comment">// 该属性的值</span></span><br><span class="line">    &#125;,</span><br><span class="line">    y:&#123;</span><br><span class="line">        writable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//是否可以设置该属性的值。</span></span><br><span class="line">        enumerable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//该属性是否可以枚举。</span></span><br><span class="line">        configurable: <span class="literal">true</span>|<span class="literal">false</span>,<span class="comment">// 是否可以删除或者修改该属性。</span></span><br><span class="line">        value: any <span class="comment">// 该属性的值</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<pre><code>4、Object.definePropery &amp;&amp; Object.defineProperies 规则：
+    1）如果对象不可扩展[Object.preventExtensions]，则只可以编辑自有属性，不能新增。
+    2）如果属性不可配置，则不能修改可配置和可枚举的属性。
+    3）如果属性不可配置，不能修改getter和setter，也不能转换为数据属性[同理不能反转]
+    4）数据不可配置时，可以将writable设置为true但是不能设置为false
+</code></pre><h3 id="7、对象的是那个属性"><a href="#7、对象的是那个属性" class="headerlink" title="7、对象的是那个属性"></a>7、对象的是那个属性</h3><pre><code>1、哪三个？ =》 property原型 、 class类 、 Extensibleattribute 可扩展性
+    1）原型属性
+        1- Object.getPrototypeOf()// 获取对象的原型，只获取一层
+        2-isPrototypeOf() 检查一个对象是否是另一个对象的原型。[o.isPrototypeOf(p)]
+        instanceof 检查左侧是否是右侧实例。 p instanceof o
+    2）类属性
+        1- 用Object.property.toString.call(对象实例).slice(8, -1); =&gt; Array/Date...
+    3）可扩展性
+        1- Object.preventExtensions将对象设置为不可扩展。
+            只影响本身。不可逆。 Object.esExtensible()检测 =》true|false
+        2- Object.seal() //将自有属性设置成不可扩展的同时设置成不可配置。
+            Object.isSealed()检测 =》 Boolean。
+        3- Object.freeze() // 除了seal实现之上将所有值设置成只读。【可以通过存取器设置值】。
+            Object.isFrozen（）检测 =》 Boolean。
+</code></pre><h3 id="8、序列化对象"><a href="#8、序列化对象" class="headerlink" title="8、序列化对象"></a>8、序列化对象</h3><pre><code>1、 JSON.stringify() // 序列化对象可枚举属性。
+</code></pre><h3 id="9、总结："><a href="#9、总结：" class="headerlink" title="9、总结："></a>9、总结：</h3><pre><code>1、创建对象后其实是新实例的原型指向【构造函数的property[原型对象]】
+    var a = new Object(); a.__proto__ = Object.property[Object的原型对象]
+2、所有函数的最终原型都指向Object.property
+3、对象是一个类字典的关联数组
+4、如果是只读属性，则不能重新赋值，用definePropery可以改变。
+    继承来的只读属性无法被修改和创建。
+5、检测属性：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">in</span>： p <span class="keyword">in</span> o =&gt; 可以查到原型上。看p是否在o的自身或原型上</span><br><span class="line">hasOwnProperty：o.hasOwnProperty(p) =&gt;o是否由属性p。[只检查自身属性]</span><br><span class="line"><span class="keyword">for</span>...in：遍历所有可枚举属性[包括原型]</span><br><span class="line"><span class="built_in">Object</span>.getOwnPropertyNames() =&gt;返回自身所有属性[包括不可枚举]</span><br><span class="line"><span class="built_in">Object</span>.keys() =&gt; 返回自身可枚举属性[不包括原型]</span><br><span class="line">isPrototypeOf() =&gt; o.isPrototypeOf(p) =&gt; p是否继承了o[o.property是否有p]</span><br><span class="line"><span class="built_in">Object</span>.getPrototypeOf() =》 获取当前对象的原型</span><br><span class="line"><span class="built_in">Object</span>.preventExtensions（）将对象设置为不可扩展。【不可新增属性】</span><br><span class="line"><span class="built_in">Object</span>.seal() 将对象设置为不可扩展，设置不可配置</span><br><span class="line"><span class="built_in">Object</span>.freeze() 将对象设置为不可扩展，设置不可配置，设置只读</span><br></pre></td></tr></table></figure>
+<pre><code>6、通过存取器设置只读只写get；set；
+7、Object.definePropery：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.definePropery(&#123;&#125;,<span class="string">"key"</span>, &#123;</span><br><span class="line">    writable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//是否可以设置该属性的值。</span></span><br><span class="line">    enumerable: <span class="literal">true</span>|<span class="literal">false</span>, <span class="comment">//该属性是否可以枚举。</span></span><br><span class="line">    configurable: <span class="literal">true</span>|<span class="literal">false</span>,<span class="comment">// 是否可以删除或者修改该属性。</span></span><br><span class="line">    value: any, <span class="comment">// 该属性的值</span></span><br><span class="line">    set key() &#123;&#125;, <span class="comment">//设置劫持</span></span><br><span class="line">    get key() &#123;&#125; <span class="comment">// 获取劫持</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="1：第七章（数组）"><a href="#1：第七章（数组）" class="headerlink" title="1：第七章（数组）"></a>1：第七章（数组）</h2><blockquote>
+<p>数组是值的有序集合。每一个值叫做一个元素，而每个元素在数组中有一个位置，以数字表示，称为索引。<br>数组的第一个元素索引是0，最大能容纳2^32 - 2 个单位的元素。<br>数组是对象的特殊形式。索引对应是属性名称。访问常规对象时，数组是要更快一些的。</p>
+</blockquote>
+<h3 id="1、创建数组："><a href="#1、创建数组：" class="headerlink" title="1、创建数组："></a>1、创建数组：</h3><pre><code>1、var arr = [];
+2、new Array(10) = [empty * 10]; =&gt;empty = undefined;
+    new Array(2, &apos;a&apos;. &apos;b&apos;) = [&apos;a&apos;, &apos;b&apos;];
+3、var arr = [,,,] =&gt; [undefined,undefined,undefined]
+</code></pre><h3 id="2、数组元素的读和写："><a href="#2、数组元素的读和写：" class="headerlink" title="2、数组元素的读和写："></a>2、数组元素的读和写：</h3><pre><code>1、arr = [1,2,3]; a[1] = 2;
+    a[3] = 4; ==&gt; arr = [1,2,3,4];
+2、所有索引都是属性名,但只有[0,2^32-2]范围内的整数才是索引
+</code></pre><h3 id="3、稀疏数组："><a href="#3、稀疏数组：" class="headerlink" title="3、稀疏数组："></a>3、稀疏数组：</h3><pre><code>1、var arr = [1,empty,2];
+2、稀疏数组在实现上比稠密数组更慢，内存利用率更高。
+</code></pre><h3 id="4、数组长度："><a href="#4、数组长度：" class="headerlink" title="4、数组长度："></a>4、数组长度：</h3><pre><code>1、每个数组都有一个length长度。稠密数组中这个长度决定元素的个数。
+2、用Object.defineproperty将Array的length设置成只读的
+[writable：false]。则数组的长度无法改变。无法新增或者删除数组。只能修改当前数组。
+</code></pre><h3 id="5、数组元素的添加和删除："><a href="#5、数组元素的添加和删除：" class="headerlink" title="5、数组元素的添加和删除："></a>5、数组元素的添加和删除：</h3><pre><code>1、尾部增加：[d].push(a,b,c) =&gt; [d,a,b,c]; return length;
+2、头部添加：[a].unshift(b,c,d) =&gt; [b,c,d,a]; return d;
+3、尾部删除：[a,b,c].pop() =&gt; [a,b]; return c;
+4、头部删除：[a,b,c].shift() =&gt; [b,c]; return a;
+5、splice：用于删除、添加、替换数组。
+</code></pre><h3 id="6、数组遍历："><a href="#6、数组遍历：" class="headerlink" title="6、数组遍历："></a>6、数组遍历：</h3><pre><code>for循环。
+用for...in循环只会找到数组的下标。【相当于遍历对象】
+forEach。
+</code></pre><h3 id="7、数组方法："><a href="#7、数组方法：" class="headerlink" title="7、数组方法："></a>7、数组方法：</h3><pre><code>1、join：
+将数组转换为字符串并拼接在一起。默认使用&quot;,&quot;。
+[a,b,c].join(&apos;:&apos;) =&gt; &quot;a:b:c&quot;;
+2、reverse：
+将数组元素颠倒。
+[a,b,c].reverse() =&gt; [c,b,a];
+3、sort：
+将数组排序。排序的方法是：一般使用快速排序，特殊使用了并归排序。
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">arr.sort(<span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//a,b代表数组元素。</span></span><br><span class="line">    若a应该在前则 <span class="keyword">return</span> <span class="number">-1</span>；</span><br><span class="line">    若a应该在后则 <span class="keyword">return</span> <span class="number">1</span>；</span><br><span class="line">    若<span class="keyword">return</span> <span class="number">0</span> 则a, b不换位。</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<pre><code>4、concat：拼接数组。
+[a,b].concat(c,d) =&gt; [a,b,c,d];
+[a,b].concat([c,d]) =&gt; [a,b,c,d];
+5、slice：
+返回指定数组的片段。它的两个参数分别指代开始和结束位置。
+[开始index，结束index）；包含前边，不包含后边。
+如果参数出现复数，则代表从后面开始计算。
+它不会修改调用它的数组。
+    var arr = [1,2,3,4];
+    arr.slice(0,2) =&gt; return [1,2];
+    arr.slice(2) =&gt; return [3,4]; 只天蝎一个就直接到结尾。
+    arr.slice(1,-1) =&gt;return [2,3] //从1开始不包含最后一位
+    arr.slice(-2,-1) =&gt; return [3] //从倒数第二个开始。
+6、splice：
+在数组中插入，删除的通用方法。会修改调用他的数组。
+第一个参数指定起始位置。第二个参数表示应该删除(替换)的个数。
+返回值为删除元素组成的数组。如果没有则为[]；
+[1，2，3，4，5，6，7，8].splice(4) =&gt; arr = [1,2,3,4]; return [5,6,7,8];
+[1,2,3,4].splice(1,2) =&gt; arr = [1,4]; return [2,3];
+[1,2,3,4].splice(1,2,a,b)=&gt; arr = [1,a,b,4]; return [2,3];
+[1,2,3].splice(1,0,a,b) =&gt; arr = [1,a,b,2,3];return [];
+7、push和pop：
+允许数组当作栈来使用[先进后出]；
+都会修改调用他们的数组。
+8、unshift和shift：
+从头部操作，和push，pop一样会影响调用数组。
+9、toString：
+他与空参数的join()一样结果。
+</code></pre><h3 id="8、ES5中的数组方法："><a href="#8、ES5中的数组方法：" class="headerlink" title="8、ES5中的数组方法："></a>8、ES5中的数组方法：</h3><pre><code>1、forEach(item, index, selfArr)：
+从头到位遍历数组。三个回调参数依次是：数组元素，数组下标，
+数组自身。
+若想终止forEach，可以把循环写在try...catch语句中。然后在循环中throw 错误。
+2、map()：
+要有返回值。与forEach类似。不修改调用数组。
+3、filter()：
+根据返回值的true|false判断返回的数组中是否含有当前数组元素。不会修改调用数组。
+返回的永远是稠密数组。会直接跳过稀疏数组中的缺失元素。【不会跳过null和undefined】；
+4、every和some：
+是个判断方法，返回true|false。
+every中有一个返回的是false则最终的得到的是false。
+some中有一个返回的是true则最终返回的是true。
+一旦有一个值可以确定最终返回值，则循环会停止。
+5、reduce[从左开始]和reduceRight[从右开始]：
+将每个数组元素循环进行操作。并接受上一个元素的返回值。
+在空数组中调用无参数的reduce会报错。eg：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>];</span><br><span class="line">a.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">x,y</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 1，2 return x+y</span></span><br><span class="line">    <span class="comment">// 3，3</span></span><br><span class="line">    <span class="comment">// 6，4</span></span><br><span class="line">&#125;, 初始值，不写的话默认取数组第<span class="number">0</span>个元素)；</span><br><span class="line">a.reduceRight(<span class="function"><span class="keyword">function</span> (<span class="params">x, y</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//4，3</span></span><br><span class="line">    <span class="comment">//7，2</span></span><br><span class="line">    <span class="comment">//9，1</span></span><br><span class="line">&#125;,初始值，不写的话默认取数组最后一个元素)</span><br></pre></td></tr></table></figure>
+<pre><code>6、indexOf[从左侧开始搜索]和lastIndexOf[从右侧开始搜索]：
+搜多整个数组的指定元素，如果有则返回下标。若没有则返回-1；
+第二个参数指定开始搜索的位置。负数则代表从右侧开始数。
+</code></pre><h3 id="9、数组类型："><a href="#9、数组类型：" class="headerlink" title="9、数组类型："></a>9、数组类型：</h3><pre><code>检测数组类型：Array.isArray();
+Object.property.toString.call(arr).slice(8, -1)
+</code></pre><h3 id="10、类数组对象："><a href="#10、类数组对象：" class="headerlink" title="10、类数组对象："></a>10、类数组对象：</h3><pre><code>拥有length等一些数组特征。却不具备数组的特性。[个人理解：原型上不含Array.property]
+常见的是函数的参数：arguments，dom元素的List。
+可以通过：Array.prototype.数组方法.call(类数组对象)或
+[].slice().数组方法.call（类数组对象）；对它执行数组方法
+</code></pre><h3 id="11、总结："><a href="#11、总结：" class="headerlink" title="11、总结："></a>11、总结：</h3><pre><code>1、new Array(2,1,2) =&gt; [1,2];
+    new Array(2) =&gt; [empty * 2] =&gt; arr[0] == undefined;
+2、索引都是属性名，但是范围在[0,2^32-2]内；数组都是对象。
+3、数组查找快于对象；若数组下标非连续，则为稀疏数组。
+4、数组长度控制数组大小。若length被锁死，则数组无法增删。但可变更。若用了Object.freeze则不可变更。
+5、数组的各个方法。
+6、instanceof 不可靠，不同窗体相同构造函数会由差别。
+7、类数组对象是由length的objcet。下标是key值而非索引。
+</code></pre>
+                
+
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2020/05/22/每周一段JavaScript权威指南/week3/" data-toggle="tooltip" data-placement="top" title="每周一段JavaScript权威指南-第三周">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2020/04/25/每周一段JavaScript权威指南/week1/" data-toggle="tooltip" data-placement="top" title="每周一段JavaScript权威指南-第一周">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                <br>
+                
+                <!-- require APlayer -->
+                
+
+                <!-- duoshuo Share start -->
+                
+                <!-- 多说 Share end-->
+
+                <!-- 多说评论框 start -->
+                
+                <!-- 多说评论框 end -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+
+                
+
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents    toc是根据#作为锚链接的 -->
+
+  
+    
+      <aside id="sidebar">
+        <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+          <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#第二周"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">第二周</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1：第六章（对象）"><span class="toc-nav-number">1.1.</span> <span class="toc-nav-text">1：第六章（对象）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、创建对象："><span class="toc-nav-number">1.1.1.</span> <span class="toc-nav-text">1、创建对象：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、属性的查询设置："><span class="toc-nav-number">1.1.2.</span> <span class="toc-nav-text">2、属性的查询设置：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、删除属性："><span class="toc-nav-number">1.1.3.</span> <span class="toc-nav-text">3、删除属性：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4、检查属性："><span class="toc-nav-number">1.1.4.</span> <span class="toc-nav-text">4、检查属性：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5、枚举属性："><span class="toc-nav-number">1.1.5.</span> <span class="toc-nav-text">5、枚举属性：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6、属性的特性"><span class="toc-nav-number">1.1.6.</span> <span class="toc-nav-text">6、属性的特性</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7、对象的是那个属性"><span class="toc-nav-number">1.1.7.</span> <span class="toc-nav-text">7、对象的是那个属性</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8、序列化对象"><span class="toc-nav-number">1.1.8.</span> <span class="toc-nav-text">8、序列化对象</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9、总结："><span class="toc-nav-number">1.1.9.</span> <span class="toc-nav-text">9、总结：</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#1：第七章（数组）"><span class="toc-nav-number">1.2.</span> <span class="toc-nav-text">1：第七章（数组）</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1、创建数组："><span class="toc-nav-number">1.2.1.</span> <span class="toc-nav-text">1、创建数组：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2、数组元素的读和写："><span class="toc-nav-number">1.2.2.</span> <span class="toc-nav-text">2、数组元素的读和写：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3、稀疏数组："><span class="toc-nav-number">1.2.3.</span> <span class="toc-nav-text">3、稀疏数组：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#4、数组长度："><span class="toc-nav-number">1.2.4.</span> <span class="toc-nav-text">4、数组长度：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#5、数组元素的添加和删除："><span class="toc-nav-number">1.2.5.</span> <span class="toc-nav-text">5、数组元素的添加和删除：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#6、数组遍历："><span class="toc-nav-number">1.2.6.</span> <span class="toc-nav-text">6、数组遍历：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#7、数组方法："><span class="toc-nav-number">1.2.7.</span> <span class="toc-nav-text">7、数组方法：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#8、ES5中的数组方法："><span class="toc-nav-number">1.2.8.</span> <span class="toc-nav-text">8、ES5中的数组方法：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#9、数组类型："><span class="toc-nav-number">1.2.9.</span> <span class="toc-nav-text">9、数组类型：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#10、类数组对象："><span class="toc-nav-number">1.2.10.</span> <span class="toc-nav-text">10、类数组对象：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#11、总结："><span class="toc-nav-number">1.2.11.</span> <span class="toc-nav-text">11、总结：</span></a></li></ol></li></ol></li></ol>
+        
+        </div>
+      </aside>
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#JavaScript权威指南" title="JavaScript权威指南">JavaScript权威指南</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="https://github.com/GTRgoSky/TestLOL" target="_blank">GitHub-Demo</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                <p class="copyright text-muted">
+                    Copyright &copy; Wings 2022 
+                    <br>
+                    Theme by <a href="http://beantech.org">BeanTech</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    主题来自: <a target="_black" href="https://github.com/huweihuang/hexo-theme-huweihuang/blob/master/_config.yml">这里</a>
+                    <a target="_black" href="https://www.huweihuang.com/">这里</a>
+                    <br>
+                    小美女华华专属
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://GTRgoSky.github.io.git/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+<!-- Image to hack wechat -->
+<img src="https://GTRgoSky.github.io.git/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
